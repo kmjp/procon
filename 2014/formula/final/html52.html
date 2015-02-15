@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>canvasで図形を描く</title>
+
+<script type="text/javascript">
+<!--
+var R=[];
+var X=[];
+var Y=[];
+
+function sample() {
+	//描画コンテキストの取得
+	var canvas = document.getElementById('sample1');
+	var context = canvas.getContext('2d');
+
+	for(i=0;i<=100;i++) R.push(i);
+	for(i=0;i<=100;i++) X.push(0);
+	for(i=0;i<=100;i++) Y.push(0);
+	
+	for(x=0;x<5;x++) for(y=0;y<5;y++) {
+		i=x*5+y+1;
+		ox=x*300;
+		oy=y*300;
+		X[101-i]=ox+(101-i);
+		Y[101-i]=oy+(101-i);
+		X[50+i]=ox+300-(50+i);
+		Y[50+i]=oy+300-(50+i);
+		X[51-i]=ox+300-(51-i);
+		Y[51-i]=oy+(51-i);
+		X[i]=ox+i;
+		Y[i]=oy+300-i;
+	}
+	for(y=1;y<5;y++) {
+		context.beginPath();
+		context.moveTo(0, 300*y);
+		context.lineTo(1500, 300*y);
+		context.stroke();
+		context.beginPath();
+		context.moveTo(300*y,0);
+		context.lineTo(300*y,1500);
+		context.stroke();
+	}
+	
+	context.lineWidth = 2;
+	context.fillStyle = 'rgb(255,00,00)'; //塗りつぶしの色は赤
+	for(i=0;i<R.length;i++) if(R[i]>0 && X[i]>0) {
+		context.beginPath();
+		context.arc(X[i],Y[i],R[i],0,Math.PI*2);
+		context.stroke();
+	} 
+}
+//-->
+</script>
+
+</head>
+<body onLoad="sample()">
+<h2>canvasで図形を描く</h2>
+<canvas id="sample1" style="background-color:lightgray;" width=1500 height=1500>
+図形を表示するには、canvasタグをサポートしたブラウザが必要です。
+</canvas>
+</body>
+</html>
