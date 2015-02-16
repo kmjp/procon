@@ -14,21 +14,25 @@ typedef signed long long ll;
 int N,B[600];
 ll mo=1000000007;
 ll pat;
+ll sp[502][502];
+ll sub[502][502];
+
 void solve() {
-	int i,j,k,l,r,x,y; string s;
+	int i,j,k,l,r,x,y,w; string s;
 	
 	cin>>N;
 	pat=1;
-	FOR(i,N) {
-		cin>>B[i];
-		if(i==0) continue;
-		else {
-			y=i;
-			FOR(x,i) if(B[x]>B[i]) y--;
-			pat=pat*y%mo;
+	FOR(i,N) cin>>B[i], sp[i][i]=sub[i][i]=1;
+	
+	for(w=1;w<N;w++) {
+		for(l=0;(r=l+w)<N;l++) {
+			sp[l][r]=sub[l][r]=sp[l+1][r];
+			for(x=l+1;x<=r;x++) if(B[l]<B[x])  sp[l][r]+=sub[l][x-1]*sp[x][r]%mo;
+			sp[l][r] %= mo;
 		}
 	}
-	cout<<pat<<endl;
+	
+	cout<<sub[0][N-1]<<endl;
 }
 
 
