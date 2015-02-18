@@ -17,7 +17,6 @@ int mask[500000],mm;
 void cprime() {
 	int i,j;
 	for(i=2;i<prime_max;i++) if(divp[i]==0) {
-		//M[i]=NP;
 		prime[NP++]=i;
 		for(j=i;j<prime_max;j+=i) divp[j]=i;
 	}
@@ -26,9 +25,9 @@ void cprime() {
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	prime[NP++]=1;
+	prime[NP++]=0;
 	cprime();
-	prime[NP]=5000000;
+	prime[NP++]=5000000;
 	
 	FOR(i,NP) {
 		j=prime[i];
@@ -37,8 +36,7 @@ void solve() {
 	cin>>i;
 	while(i--) cin>>x, mm |= 1<<x;
 	if(mm==1023) return _P("4999999\n");
-	prime[0]=1;
-	prime[NP-1]=5000000;
+
 	int ret=-1;
 	for(i=1;i<NP;i++) {
 		int ma=0;
