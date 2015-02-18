@@ -15,41 +15,32 @@ int N,M;
 ll D[202000],H[202000];
 ll DS[201000];
 
-template<class V,int NV> class SegTree_1 {
+template<class V,int NV> class SegTree_Pair {
 public:
-	vector<V> val;
-	vector<V> id;
+	vector<pair<V,int> > val;
 	static V const def=0;
-	V comp(V l,V r){ 
-		if(l<0) return r;
-		if(r<0) return l;
-		if(val[l]>=val[r]) return l;
-		return r;
-	}
-
-	
-	SegTree_1(){
-		val=vector<V>(NV*2,0);
-		id=vector<V>(NV*2,0);
+	pair<V,int> comp(pair<V,int> l,pair<V,int> r){ return max(l,r);}
+	SegTree_Pair(){
+		val.resize(NV*2);
 		int i;
-		FOR(i,NV) id[i]=2*i;
-		FOR(i,NV) id[NV+i]=NV+i;
+		FOR(i,NV) val[i]=make_pair(def,NV+i);
+		for(i=NV-1;i>=1;i--) val[i]=comp(val[2*i],val[2*i+1]);
 	};
-	V getval(int x,int y,int l=0,int r=NV,int k=1) {
-		if(r<=x || y<=l) return -1;
-		if(x<=l && r<=y) return id[k];
+	pair<V,int> getval(int x,int y,int l=0,int r=NV,int k=1) {
+		if(r<=x || y<=l) return make_pair(def,NV);
+		if(x<=l && r<=y) return val[k];
 		return comp(getval(x,y,l,(l+r)/2,k*2),getval(x,y,(l+r)/2,r,k*2+1));
 	}
 	void update(int entry, V v) {
 		entry += NV;
-		val[entry]=v;
-		while(entry>1) entry>>=1, id[entry]=comp(id[entry*2],id[entry*2+1]);
+		val[entry]=make_pair(v,entry);
+		while(entry>1) entry>>=1, val[entry]=comp(val[entry*2],val[entry*2+1]);
 	}
 };
 
 int A[101000],B[101000];
 int AD=1<<22;
-SegTree_1<ll,1<<22> LT,RT;
+SegTree_Pair<ll,1<<22> LT,RT;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -68,27 +59,24 @@ void solve() {
 		if(x<=y) A[i]=y+1, B[i]=N+x-1;
 		else A[i]=y+1,B[i]=x-1;
 		
-		ll lc=LT.getval(A[i],B[i]+1);
-		ll rc=RT.getval(A[i],B[i]+1);
+		pair<ll,int> lc,rc,a1,a2;
+		lc=LT.getval(A[i],B[i]+1);
+		rc=RT.getval(A[i],B[i]+1);
 		
 		ll ret;
-		if(lc!=rc) {
-			ret = LT.val[lc]+RT.val[rc]-DS[200100];
+		if(lc.second!=rc.second) {
+			ret = lc.first+rc.first-DS[200100];
 		}
 		else {
-			lc -= AD;
-			ll a1=RT.getval(A[i],lc);
-			ll a2=RT.getval(lc+1,B[i]+1);
 			ll ret1,ret2;
-			if(a1==-1) ret1 = LT.val[lc+AD] + RT.val[a2];
-			else if(a2==-1) ret1 = LT.val[lc+AD] + RT.val[a1];
-			else ret1 = LT.val[lc+AD] + max(RT.val[a1],RT.val[a2]);
+			a1=RT.getval(A[i],lc.second-AD);
+			a2=RT.getval(lc.second-AD+1,B[i]+1);
 			
-			a1=LT.getval(A[i],lc);
-			a2=LT.getval(lc+1,B[i]+1);
-			if(a1==-1) ret2 = RT.val[lc+AD] + LT.val[a2];
-			else if(a2==-1) ret2 = RT.val[lc+AD] + LT.val[a1];
-			else ret2 = RT.val[lc+AD] + max(LT.val[a1],LT.val[a2]);
+			ret1 = lc.first + max(a1.first,a2.first);
+			
+			a1=LT.getval(A[i],lc.second-AD);
+			a2=LT.getval(lc.second-AD+1,B[i]+1);
+			ret2 = rc.first + max(a1.first,a2.first);
 			
 			ret=max(ret1,ret2)-DS[200100];
 		}
