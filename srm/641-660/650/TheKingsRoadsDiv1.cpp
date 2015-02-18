@@ -21,6 +21,7 @@ class TheKingsRoadsDiv1 {
 	bool ok(int cur,int pre,int num) {
 		int i;
 		bool ret=true;
+		vis[cur]=1;
 		if(num==0) return false;
 		num--;
 		
@@ -31,15 +32,6 @@ class TheKingsRoadsDiv1 {
 		FOR(i,E[cur].size()) if(E[cur][i]!=pre) ret &= ok(E[cur][i],cur,num/2);
 		return ret;
 		
-	}
-	int conn(int cur,int pre) {
-		int num=1,i;
-		vis[cur]=1;
-		FOR(i,E[cur].size()) if(E[cur][i]!=pre) {
-			if(vis[E[cur][i]]) return 1025;
-			num+=conn(E[cur][i],cur);
-		}
-		return num;
 	}
 	
 	string getAnswer(int h, vector <int> a, vector <int> b) {
@@ -78,11 +70,8 @@ class TheKingsRoadsDiv1 {
 					FOR(x,1<<h) E[x].clear();
 					FOR(j,L) if(j!=X && j!=Y && j!=Z) E[a[j]].push_back(b[j]),E[b[j]].push_back(a[j]);
 					ZERO(vis);
-					if(conn(0,-1)!=(1<<h)-1) goto out2;
-					
-					
 					FOR(j,(1<<h)-1) if(E[j].size()==2) st=j;
-					if(st!=-1 && ok(st,-1,(1<<h)-1)) return "Correct";
+					if(st!=-1 && ok(st,-1,(1<<h)-1) && count(vis,vis+(1<<h)-1,1)==(1<<h)-1) return "Correct";
 					
 					out2:
 					N[num[a[Z]]]--;N[++num[a[Z]]]++;

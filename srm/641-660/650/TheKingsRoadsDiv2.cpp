@@ -19,6 +19,7 @@ class TheKingsRoadsDiv2 {
 	bool ok(int cur,int pre,int num) {
 		int i;
 		bool ret=true;
+		vis[cur]=1;
 		if(num==0) return false;
 		num--;
 		
@@ -30,15 +31,6 @@ class TheKingsRoadsDiv2 {
 		return ret;
 		
 	}
-	int conn(int cur,int pre) {
-		int num=1,i;
-		vis[cur]=1;
-		FOR(i,E[cur].size()) if(E[cur][i]!=pre) {
-			if(vis[E[cur][i]]) return 1025;
-			num+=conn(E[cur][i],cur);
-		}
-		return num;
-	}
 	
 	string getAnswer(int h, vector <int> a, vector <int> b) {
 		int i,x,j;
@@ -46,11 +38,9 @@ class TheKingsRoadsDiv2 {
 			FOR(x,1<<h) E[x].clear();
 			FOR(j,(1<<h)-1) if(i!=j) E[a[j]-1].push_back(b[j]-1),E[b[j]-1].push_back(a[j]-1);
 			ZERO(vis);
-			if(conn(0,-1)!=(1<<h)-1) continue;
-			
 			int st=-1;
 			FOR(j,(1<<h)-1) if(E[j].size()==2) st=j;
-			if(st!=-1 && ok(st,-1,(1<<h)-1)) return "Correct";
+			if(st!=-1 && ok(st,-1,(1<<h)-1) && count(vis,vis+(1<<h)-1,1)==(1<<h)-1) return "Correct";
 		}
 		return "Incorrect";
 	}
