@@ -14,27 +14,19 @@ typedef signed long long ll;
 int A,B,C,T;
 int VA[100],VB[100];
 double bdp[52];
-map<int,double> memo[55][55];
+double memo[55][55];
 const int CN=51;
 ll Co[CN][CN];
-double AA,AB;
+double AA;
 
-map<int,double> dp(int TA,int TB) {
-	if(memo[TA][TB].size()) return memo[TA][TB];
+double dp(int TA,int TB) {
+	if(memo[TA][TB]>=0) return memo[TA][TB];
 	double pa=TA*1.0/(TA+TB+C);
 	double pb=TB*1.0/(TA+TB+C);
-	map<int,double> M,T;
-	
-	if(pa) {
-		T = dp(TA-1,TB);
-		ITR(it,T) M[it->first] += pa*it->second;
-		M[0] += pa;
-	}
-	if(pb) {
-		T = dp(TA,TB-1);
-		ITR(it,T) M[it->first+1] += pb*it->second;
-	}
-	return memo[TA][TB]=M;
+	double ret=0;
+	if(pa) ret += pa*(bdp[B-TB] + dp(TA-1,TB));
+	if(pb) ret += pb*dp(TA,TB-1);
+	return memo[TA][TB]=ret;
 }
 
 void solve() {
@@ -43,6 +35,7 @@ void solve() {
 	cin>>A>>B>>C;
 	FOR(i,A) cin>>VA[i], AA+=VA[i];
 	FOR(i,CN) for(j=0;j<=i;j++) Co[i][j]=(j==0||j==i)?1:(Co[i-1][j-1]+Co[i-1][j]);
+	FOR(i,51) FOR(j,51) memo[i][j]=-1;
 	
 	bdp[0]=1;
 	FOR(i,B) {
@@ -51,11 +44,7 @@ void solve() {
 	}
 	for(i=1;i<=B;i++) bdp[i]=bdp[i]/Co[B][i];
 	
-	map<int,double> T=dp(A,B);
-	double ret=0;
-	ITR(it,T) ret += it->second*bdp[it->first];
-	
-	_P("%.12lf\n",ret*(AA/A));
+	_P("%.12lf\n",dp(A,B)*(AA/A));
 }
 
 int main(int argc,char** argv){
