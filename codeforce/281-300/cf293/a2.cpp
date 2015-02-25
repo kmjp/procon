@@ -11,8 +11,20 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
+string S,T;
+
 void solve() {
 	int i,j,k,l,r,x,y; string s;
+	
+	cin>>S>>T;
+	for(x=S.size()-1;x>=0;x--) {
+		S[x]++;
+		if(S[x]<='z') break;
+		S[x]='a';
+	}
+	
+	if(S==T) cout<<"No such string"<<endl;
+	else cout<<S<<endl;
 }
 
 
