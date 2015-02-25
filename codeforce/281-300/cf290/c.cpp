@@ -16,10 +16,6 @@ int A[1010];
 
 const int prime_max = 100000;
 int NP,prime[100000],divp[prime_max];
-map<int,int> M;
-
-int mat[300][300];
-int ok[300][300];
 
 void cprime() {
 	for(int i=2;i<prime_max;i++) if(divp[i]==0) {
@@ -38,7 +34,6 @@ public:
 	void add_edge(int x,int y,V cap) {
 		E[x].push_back((edge){y,(int)E[y].size(),cap});
 		E[y].push_back((edge){x,(int)E[x].size()-1,0}); // directed
-		//E[y].push_back((edge){x,(int)E[x].size()-1,cap}); // undirect
 	}
 	
 	void bfs(int cur) {
@@ -83,12 +78,10 @@ int vis[201];
 vector<int> dfs(int cur,int pre) {
 	vector<int> v;
 	vis[cur]=1;
-	if(EE[cur][0]!=pre && vis[EE[cur][0]]==0) {
-		v=dfs(EE[cur][0],cur);
-	}
-	else if(EE[cur][1]!=pre && vis[EE[cur][1]]==0) {
-		v=dfs(EE[cur][1],cur);
-	}
+	
+	if(EE[cur][0]!=pre && vis[EE[cur][0]]==0) v=dfs(EE[cur][0],cur);
+	else if(EE[cur][1]!=pre && vis[EE[cur][1]]==0) v=dfs(EE[cur][1],cur);
+	
 	v.push_back(cur);
 	return v;
 }
@@ -106,9 +99,7 @@ void solve() {
 		if(A[x]%2==0) mf.add_edge(1+x,300,2);
 	}
 	FOR(x,N) FOR(y,N) if(A[x]%2 && divp[A[x]+A[y]]==A[x]+A[y]) mf.add_edge(1+x,1+y,1);
-	if(mf.maxflow(0,300)!=N) {
-		return _P("Impossible\n");
-	}
+	if(mf.maxflow(0,300)!=N) return _P("Impossible\n");
 	
 	FOR(x,N) if(A[x]%2) {
 		FOR(y,mf.E[1+x].size()) {
@@ -119,17 +110,14 @@ void solve() {
 			}
 		}
 	}
-	FOR(x,N) if(vis[x]==0) {
-		V.push_back(dfs(x,-1));
-	}
+	FOR(x,N) if(vis[x]==0) V.push_back(dfs(x,-1));
+	
 	_P("%d\n",V.size());
 	FOR(i,V.size()) {
 		_P("%d",V[i].size());
 		FOR(j,V[i].size()) _P(" %d",V[i][j]+1);
 		_P("\n");
 	}
-	
-	
 }
 
 
