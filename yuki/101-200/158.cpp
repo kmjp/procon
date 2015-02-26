@@ -11,23 +11,14 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-
-
-struct S {
-	int a,b,c;
-	S(int _a,int _b,int _c){ a=_a, b=_b, c=_c;}
-	int val(){ return a*1000+b*100+c;};
-};
-struct cmp {
-	bool operator()(const S& a, const S& b) const {
-		return a.a<b.a || (a.a==b.a && (a.b<b.b || (a.b==b.b && a.c<b.c)));  };
-};
-
 int A[3],B[2][3];
 int D[2];
 int ma;
-set<S,cmp> V[10001];
-map<S,int,cmp> M;
+typedef tuple<int,int,int> S;
+set<S> V[10001];
+map<S,int> M;
+
+int val(S v){ return get<0>(v)*1000+get<1>(v)*100+get<2>(v);}
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -35,9 +26,9 @@ void solve() {
 	cin>>A[0]>>A[1]>>A[2];
 	FOR(i,2) cin>>D[i]>>B[i][0]>>B[i][1]>>B[i][2];
 	
-	S f(A[0],A[1],A[2]);
+	S f = tie(A[0],A[1],A[2]);
 	M[f]=0;
-	V[f.val()].insert(f);
+	V[val(f)].insert(f);
 	
 	for(i=10000;i>=0;i--) {
 		ITR(it,V[i]) {
@@ -46,13 +37,15 @@ void solve() {
 				S k=*it;
 				
 				x=D[j];
-				r=min(x/1000,k.a); k.a -= r; x -= r*1000;
-				r=min(x/100,k.b);  k.b -= r; x -= r*100;
-				r=min(x,k.c);      k.c -= r; x -= r;
+				r=min(x/1000,get<0>(k)); x -= r*1000; get<0>(k)-=r;
+				r=min(x/100,get<1>(k));  x -= r*100 ; get<1>(k)-=r;
+				r=min(x,get<2>(k));      x -= r;      get<2>(k)-=r;
 				if(x==0) {
-					S k2(k.a+B[j][0],k.b+B[j][1],k.c+B[j][2]);
-					M[k2]=max(M[k2],M[*it]+1);
-					V[k2.val()].insert(k2);
+					get<0>(k) += B[j][0];
+					get<1>(k) += B[j][1];
+					get<2>(k) += B[j][2];
+					M[k]=max(M[k],M[*it]+1);
+					V[val(k)].insert(k);
 				}
 			}
 		}
