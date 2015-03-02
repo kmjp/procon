@@ -14,36 +14,7 @@ typedef signed long long ll;
 class FoxConnection3 {
 	public:
 	int N;
-	set<vector<pair<int,int> > > P;
-	
-	void dfs(int left,set<pair<int,int> >& S) {
-		if(left==0) {
-			vector<pair<int,int> > p;
-			int mx=1<<30,my=1<<30;
-			ITR(it,S) mx=min(mx,it->first),my=min(my,it->second);
-			ITR(it,S) p.push_back(make_pair(it->first-mx,it->second-my));
-			P.insert(p);
-			return;
-		}
-		
-		set<pair<int,int> > next;
-		int i;
-		ITR(it,S) {
-			int cx=it->first,cy=it->second;
-			FOR(i,4) {
-				int dd[4]={1,0,-1,0};
-				int ty=cy+dd[i],tx=cx+dd[i^1];
-				if(S.count(make_pair(tx,ty))) continue;
-				next.insert(make_pair(tx,ty));
-			}
-		}
-		
-		ITR(it,next) {
-			S.insert(*it);
-			dfs(left-1,S);
-			S.erase(*it);
-		}
-	}
+	set<set<pair<int,int> > > S[9];
 	
 	ll tot(vector<ll>& V,ll dif) {
 		ll tot=0;
@@ -73,13 +44,37 @@ class FoxConnection3 {
 		ll mi=1LL<<60;
 		int i,j;
 		
-		P.clear();
-		set<pair<int,int> > S;
-		S.insert(make_pair(0,0));
-		dfs(N-1,S);
-		ITR(it,P) {
+		set<pair<int,int> > ts;
+		ts.insert(make_pair(0,0));
+		S[1].insert(ts);
+		
+		for(i=1;i<=X.size()-1;i++) {
+			ITR(it,S[i]) {
+				set<pair<int,int> > s=*it;
+				
+				ITR(it2,s) {
+					int cx=it2->first,cy=it2->second;
+					FOR(j,4) {
+						int dd[4]={1,0,-1,0};
+						int tx=cx+dd[j],ty=cy+dd[j^1];
+						if(s.count(make_pair(tx,ty))) continue;
+						set<pair<int,int> > s2;
+						int dx=(tx<0),dy=(ty<0);
+						s2.insert(make_pair(tx+dx,ty+dy));
+						ITR(it3,s) s2.insert(make_pair(it3->first+dx,it3->second+dy));
+						S[i+1].insert(s2);
+					}
+				}
+				
+			}
+		}
+	
+		ITR(it,S[X.size()]) {
 			vector<int> V;
-			vector<pair<int,int> > C=*it;
+			set<pair<int,int> > CS=*it;
+			vector<pair<int,int> > C;
+			ITR(it2,CS) C.push_back(*it2);
+			
 			vector<ll> xs(N,0),ys(N,0);
 			FOR(i,N) V.push_back(i);
 			do {
