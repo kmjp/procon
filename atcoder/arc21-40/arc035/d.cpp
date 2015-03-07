@@ -15,9 +15,10 @@ typedef signed long long ll;
 
 template<class V, int ME> class BIT {
 public:
-	V bit[1<<ME];
+	V bit[1<<ME],val[1<<ME];
 	V total(int e) {V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
-	void update(int e, V val) {e++; while(e<=1<<ME) bit[e-1]+=val,e+=e&-e;}
+	V add(int e,V v) { val[e++]+=v; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
+	V set(int e,V v) { add(e,v-val[e]);}
 };
 BIT<double,22> bt;
 
@@ -42,7 +43,7 @@ void solve() {
 	FOR(i,N) cin>>P[i]>>Q[i];
 	FOR(i,N-1) {
 		pat[i+1]=pp(P[i],Q[i],P[i+1],Q[i+1]);
-		bt.update(i+1,pat[i+1]);
+		bt.set(i+1,pat[i+1]);
 	}
 	
 	cin>>QQ;
@@ -53,16 +54,8 @@ void solve() {
 			cin>>k>>a>>b;
 			k--;
 			
-			if(k!=0) {
-				double np=pp(P[k-1],Q[k-1],a,b);
-				bt.update(k,np-pat[k]);
-				pat[k]=np;
-			}
-			if(k!=N-1) {
-				double np=pp(a,b,P[k+1],Q[k+1]);
-				bt.update(k+1,np-pat[k+1]);
-				pat[k+1]=np;
-			}
+			if(k!=0) bt.set(k,pp(P[k-1],Q[k-1],a,b));
+			if(k!=N-1) bt.set(k+1,pp(a,b,P[k+1],Q[k+1]));
 			P[k]=a;
 			Q[k]=b;
 		}
