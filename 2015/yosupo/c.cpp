@@ -15,7 +15,6 @@ typedef signed long long ll;
 int N,K,H;
 
 int L[1001],LF[1001];
-set<ll> vis[1001][101];
 int nex[1001][10],val[10];
 string S;
 
@@ -27,8 +26,6 @@ void dfs(int cur,int X,ll T) {
 	}
 	if(cur>=N) return;
 	if(N-cur<K-X-1) return;
-	//if(vis[cur][X].count(T)) return;
-	//vis[cur][X].insert(T);
 	
 	if(LF[L[X]]==X) {
 		FOR(x,10) if(nex[cur][x]<N) dfs(nex[cur][x]+1,X+1, T | (((ll)x)<<(L[X]*4)));
@@ -60,7 +57,6 @@ void solve() {
 	
 	dfs(0,1,0);
 	_P("Not Found\n");
-	
 }
 
 
