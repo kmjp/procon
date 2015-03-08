@@ -24,14 +24,7 @@ ll modpow(ll a, ll n = mo-2) {
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	cin>>A>>X>>Y;
-	
-	if(X>Y) swap(X,Y);
-	
-	if(A==1) return _P("0\n");
-	
-	
-	ll R=(modpow(A,__gcd(X,Y))+mo-1)*modpow(A-1)%mo;
-	_P("%lld\n",R*(A-1)%mo);
+	_P("%lld\n",(modpow(A,__gcd(X,Y))+mo-1)%mo);
 }
 
 
