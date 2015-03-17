@@ -10,40 +10,38 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-class MaxFlow {
+template<class V> class MaxFlow_Ford {
 public:
-	struct edge { int to, capacity, reve;};
+	struct edge { int to,reve;V cap;};
 	static const int MV = 10000;
 	vector<edge> E[MV];
 	int vis[MV];
 	
-	void init() { for(int i=0;i<MV;i++) E[i].clear();}
-	MaxFlow() {init();}
-	void add_edge(int x,int y,int cap,bool undir=false) {
-		E[x].push_back((edge){y,cap,(int)E[y].size()});
-		E[y].push_back((edge){x,undir?cap:0,(int)E[x].size()-1});
+	void add_edge(int x,int y,V cap,bool undir=false) {
+		E[x].push_back((edge){y,(int)E[y].size(),cap});
+		E[y].push_back((edge){x,(int)E[x].size()-1,undir?cap:0});
 	}
 	
-	int dfs(int from,int to,int cf) {
-		int i,tf;
+	V dfs(int from,int to,V cf) {
+		int i; V tf;
 		if(from==to) return cf;
 		vis[from]=1;
 		FOR(i,E[from].size()) {
 			edge& e=E[from][i];
-			if(vis[e.to]==0 && e.capacity>0 && (tf = dfs(e.to,to,min(cf,e.capacity)))>0) {
-				e.capacity -= tf;
-				E[e.to][e.reve].capacity += tf;
+			if(vis[e.to]==0 && e.cap>0 && (tf = dfs(e.to,to,min(cf,e.cap)))>0) {
+				e.cap -= tf;
+				E[e.to][e.reve].cap += tf;
 				return tf;
 			}
 		}
 		return 0;
 	}
 	
-	int maxflow(int from, int to) {
-		int fl=0,tf;
+	V maxflow(int from, int to) {
+		V fl=0,tf;
 		while(1) {
 			ZERO(vis);
-			if((tf = dfs(from,to,1<<29))==0) return fl;
+			if((tf = dfs(from,to,numeric_limits<V>::max()))==0) return fl;
 			fl+=tf;
 		}
 	}
@@ -54,7 +52,7 @@ class Singing {
 	public:
 	int solve(int N, int low, int high, vector <int> pitch) {
 		int i;
-		MaxFlow mf;
+		MaxFlow_Ford<int> mf;
 		for(i=1;i<=low-1;i++) mf.add_edge(0,i,pitch.size()-1);
 		for(i=high+1;i<=N;i++) mf.add_edge(i,N+1,pitch.size()-1);
 		FOR(i,pitch.size()-1) if(pitch[i]!=pitch[i+1]) mf.add_edge(pitch[i],pitch[i+1],1,true);
