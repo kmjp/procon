@@ -17,8 +17,9 @@ void solve() {
 	ll A,B,T;
 	
 	cin>>A>>B>>T;
-	ll mi=(T+B-1)/B*B;
-	for(ll a=0;a*B<=T && a<=2*A+1;a++) mi=min(mi,a*B+(T-a*B+A-1)/A*A);
+	ll mi=1LL<<60;
+	
+	for(ll y=0; y*B <= T+B && y<=A; y++) mi=min(mi, y*B+ (T-y*B+A-1)/A*A);
 	cout<<mi<<endl;
 }
 
