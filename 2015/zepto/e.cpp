@@ -25,18 +25,29 @@ void solve() {
 	while(Q--) {
 		cin>>B;
 		
+		int mi=1<<30;
 		ll sum=0;
-		x=0;
+		x=y=0;
 		FOR(i,N) {
 			while(sum+A[x]<=B) sum+=A[x++];
 			nex[i]=x;
+			if(nex[i]-i>=N) {
+				mi=1;
+				goto out;
+			}
+			
+			if(nex[i]-i<nex[y]-y) y=i;
 			sum-=A[i];
 			nex[i+N]=min(2*N,nex[i]+N);
 		}
 		
-		for(x=j=0;x<N;j++) x=nex[x];
-		for(i=x,x-=N,k=0;x<i;k++) x=nex[x];
-		cout<<min(j,k)<<endl;
+		for(x=y;x<=nex[y];x++) {
+			int cnt=0;
+			for(i=j=(x>=N)?x-N:x;i<j+N;cnt++) i=nex[i];
+			mi=min(mi,cnt);
+		}
+		out:
+		cout<<mi<<endl;
 	}
 }
 
