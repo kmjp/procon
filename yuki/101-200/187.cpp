@@ -12,12 +12,6 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-set<ll> enumpr(ll n) {
-	set<ll> V;
-	for(ll i=2;i*i<=n;i++) while(n%i==0) V.insert(i),n/=i;
-	if(n>1) V.insert(n);
-	return V;
-}
 
 ll ext_gcd(ll p,ll q,ll& x, ll& y) { // get px+qy=gcd(p,q)
 	if(q==0) return x=1,y=0,p;
@@ -32,15 +26,28 @@ ll inv(ll p,ll q) { // return (1/p)%q ( p,q is co-prime)
 	return xx;
 }
 
+
 ll CRT_garner(vector<pair<ll,ll> > V, ll mo=1000000007) {
+	const int prime_max = 40000;
+	static int NP,prime[10000],divp[prime_max+3];
 	int i,j,k,l,r,x,y; string s;
 	int N=V.size();
 	set<ll> P;
 	vector<int> num;
 	
+	if(NP==0) {
+		for(int i=2;i<prime_max;i++) if(divp[i]==0) {
+			prime[NP++]=i;
+			for(int j=i*i;j>i&&j<prime_max;j+=i) divp[j]=i;
+		}
+	}
 	FOR(i,N) {
-		set<ll> S=enumpr(V[i].second);
-		FORR(r,S) P.insert(r);
+		ll v=V[i].second;
+		FOR(j,NP) if(v%prime[j]==0) {
+			P.insert(prime[j]);
+			while(v%prime[j]==0) v/=prime[j];
+		}
+		if(v>1) P.insert(v);
 	}
 	
 	num=vector<int>(N,0);
