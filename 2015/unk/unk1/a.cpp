@@ -12,32 +12,23 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int pat[2][2];
+
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>s;
-	pat[1][0]=pat[1][1]=-100;
+	int left=-1000,right=0;
 	FORR(c,s) {
-		if(c=='F') {
-			pat[0][0]++;pat[0][1]++;
-			pat[1][0]--;pat[1][1]--;
-		}
-		if(c=='T') {
-			swap(pat[0][0],pat[1][0]);
-			swap(pat[0][1],pat[1][1]);
-		}
+		if(c=='F') left--, right++;
+		if(c=='T') swap(left,right);
 		if(c=='?') {
-			int op[2][2];
-			memmove(op,pat,sizeof(op));
-			pat[0][0]=max(op[0][0]+1,op[1][0]);
-			pat[0][1]=min(op[0][1]+1,op[1][1]);
-			pat[1][0]=max(op[1][0]-1,op[0][0]);
-			pat[1][1]=min(op[1][1]-1,op[0][1]);
+			x=left,y=right;
+			left=max(x-1,y);
+			right=max(y+1,x);
 		}
 	}
-	cout<<max(pat[0][0],pat[1][0])<<endl;
+	cout<<max(left,right)<<endl;
 }
 
 

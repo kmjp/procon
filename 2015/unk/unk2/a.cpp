@@ -26,7 +26,6 @@ void solve() {
 	FOR(i,102) {
 		FOR(j,N) if(P[j].first==i) {
 			for(x=101;x>=0;x--) FOR(y,i) {
-				
 				dp[max(x,P[j].second)][y]=max(dp[max(x,P[j].second)][y],dp[x][y]+1);
 				ma=max(ma,dp[max(x,P[j].second)][y]);
 			}

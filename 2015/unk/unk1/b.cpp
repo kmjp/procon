@@ -21,8 +21,7 @@ void solve() {
 	cin>>N>>K;
 	FOR(i,N) cin>>P[i].first, P[i].first--;
 	FOR(i,N) cin>>P[i].second, P[i].second--;
-	sort(P,P+N);
-	FOR(i,N) X[i]=P[i].second;
+	FOR(i,N) X[P[i].first]=P[i].second;
 	
 	FOR(i,N) {
 		x=1;
