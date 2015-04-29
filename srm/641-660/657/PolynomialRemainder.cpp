@@ -13,7 +13,23 @@ typedef signed long long ll;
 
 class PolynomialRemainder {
 	public:
+	int calc(ll a,ll b,ll c,ll m) {
+		int i;
+		for(i=0;i<m;i++) if((a*i%m*i+b*i+c)%m==0) return i;
+		return -1;
+	}
 	
+	int findRoot(int a, int b, int c) {
+		ll p29=2*2*2*2*2*2*2*2*2;
+		ll p59=5*5*5*5*5*5*5*5*5;
+		ll p2=calc(a,b,c,p29);
+		ll p5=calc(a,b,c,p59);
+		
+		if(p2==-1 || p5==-1) return -1;
+		while(p5 % p29 != p2) p5+=p59;
+		return p5;
+	}
+	/* alternative solution */
 	int findRoot(int a, int b, int c) {
 		ll mo=1000000000;
 		int i;
@@ -25,6 +41,7 @@ class PolynomialRemainder {
 		}
 		return -1;
 	}
+	*/
 	
 // BEGIN CUT HERE
 	public:
