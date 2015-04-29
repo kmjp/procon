@@ -15,10 +15,10 @@ class ProblemSets {
 	public:
 	bool ok(ll tar,ll E, ll EM, ll M, ll MH, ll H) {
 		if(tar>E) EM -= tar-E;
+		if(tar>H) MH -= tar-H;
 		if(EM<0) return false;
-		if(tar>EM+M) MH -= tar-(EM+M);
 		if(MH<0) return false;
-		if(MH+H<tar) return false;
+		if(EM+M+MH<tar) return false;
 		return true;
 	}
 	long long maxSets(long long E, long long EM, long long M, long long MH, long long H) {
