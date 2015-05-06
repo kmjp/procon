@@ -21,12 +21,10 @@ class OddEvenTreeHard {
 		bool up=true;
 		while(up) {
 			up=false;
-			FOR(x,N) FOR(y,N) FOR(z,N) if(E[x][y]==-1 && E[y][z]>=0 && E[z][x]>=0) {
-				E[x][y]=E[y][x]=E[y][z]^E[z][x], up=true;
-			}
+			FOR(x,N) FOR(y,N) FOR(z,N) if(E[x][y]==-100 && E[y][z]+E[z][x]>=0) E[x][y]=E[y][z]^E[z][x], up=true;
 		}
 		
-		FOR(x,N) FOR(y,N) FOR(z,N) if(E[x][y]>=0 && E[y][z]>=0 && E[z][y]>=0 && (E[x][y]^E[y][z]^E[x][z])==1) return false;
+		FOR(x,N) FOR(y,N) FOR(z,N) if(E[x][y]+E[y][z]+E[z][x]>=0 && (E[x][y]^E[y][z]^E[z][x])==1) return false;
 		return true;
 	}
 	
@@ -35,34 +33,20 @@ class OddEvenTreeHard {
 		int x,y,z,i;
 		int N=E.size();
 		
-		FOR(x,N) FOR(y,N) E[x][y]=(E[x][y]=='O')?1:((E[x][y]=='E')?0:-1);
-		FOR(x,N) {
-			if(E[x][x]==1) return invalid;
-			E[x][x]=0;
-			FOR(y,N) {
-				if(E[x][y]==-1 && E[y][x]>=0) E[x][y]=E[y][x];
-				if(E[y][x]==-1 && E[x][y]>=0) E[y][x]=E[x][y];
-				if(E[x][y]>=0 && E[y][x]>=0 && E[x][y] != E[y][x]) return invalid;
-			}
-		}
-		
+		FOR(x,N) FOR(y,N) E[x][y]=(E[x][y]=='O')?1:((E[x][y]=='E')?0:-100);
 		if(!valid(E)) return invalid;
 		
 		while(1) {
 			int sx=-1,sy=-1;
-			FOR(x,N) FOR(y,N) if(E[x][y]==-1 && sx==-1) sx=x,sy=y;
+			FOR(x,N) FOR(y,N) if(E[x][y]==-100 && sx==-1) sx=x,sy=y;
 			if(sx==-1) break;
 			
-			vector<string> E2=E;
+			vector<string> E2=E, E3=E;
 			E2[sx][sy]=1;
-			if(valid(E2)) {
-				E=E2;
-				continue;
-			}
-			E2=E;
-			E2[sx][sy]=0;
-			if(!valid(E2)) return invalid;
-			E=E2;
+			E3[sx][sy]=0;
+			if(valid(E2)) E=E2;
+			else if(valid(E3)) E=E3;
+			else return invalid;
 		}
 		
 		int odd=-1;
