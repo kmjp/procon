@@ -20,14 +20,10 @@ class Mutalisk {
 		int i,x,y,z;
 		int thr=93;
 		
-		for(i=1;i<=60;i++) {
-			for(x=0;x*9<=i+8;x++) {
-				for(y=0;y==0 || x*9+y*3<=i+2;y++) {
-					z = max(0,i-x*9-y*3);
-					if(x+y+z<=thr) T[i].insert(x*10000+y*100+z);
-				}
-			}
-		}
+		for(i=1;i<=60;i++)
+			for(x=0;x*9<=i+8;x++)
+				for(y=0;y==0 || x*9+y*3<=i+2;y++)
+					T[i].insert(x*10000+y*100+max(0,i-x*9-y*3));
 		
 		map<int,int> S;
 		S[0]=0;
