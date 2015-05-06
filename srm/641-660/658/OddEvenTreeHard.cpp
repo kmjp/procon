@@ -18,17 +18,6 @@ class OddEvenTreeHard {
 		int N=E.size();
 		int x,y,z;
 		
-		FOR(x,N) {
-			if(E[x][x]==1) return false;
-			E[x][x]=0;
-		}
-		FOR(x,N) FOR(y,N) {
-			if(E[x][y]==-1 && E[y][x]==-1) continue;
-			else if(E[x][y]==-1) E[x][y]=E[y][x];
-			else if(E[y][x]==-1) E[y][x]=E[x][y];
-			else if(E[x][y] != E[y][x]) return false;
-		}
-		
 		bool up=true;
 		while(up) {
 			up=false;
@@ -39,7 +28,6 @@ class OddEvenTreeHard {
 		
 		FOR(x,N) FOR(y,N) FOR(z,N) if(E[x][y]>=0 && E[y][z]>=0 && E[z][y]>=0 && (E[x][y]^E[y][z]^E[x][z])==1) return false;
 		return true;
-		
 	}
 	
 	vector <int> getTree(vector <string> E) {
@@ -48,6 +36,16 @@ class OddEvenTreeHard {
 		int N=E.size();
 		
 		FOR(x,N) FOR(y,N) E[x][y]=(E[x][y]=='O')?1:((E[x][y]=='E')?0:-1);
+		FOR(x,N) {
+			if(E[x][x]==1) return invalid;
+			E[x][x]=0;
+			FOR(y,N) {
+				if(E[x][y]==-1 && E[y][x]>=0) E[x][y]=E[y][x];
+				if(E[y][x]==-1 && E[x][y]>=0) E[y][x]=E[x][y];
+				if(E[x][y]>=0 && E[y][x]>=0 && E[x][y] != E[y][x]) return invalid;
+			}
+		}
+		
 		if(!valid(E)) return invalid;
 		
 		while(1) {
