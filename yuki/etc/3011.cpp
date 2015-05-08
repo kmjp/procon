@@ -24,7 +24,7 @@ void solve() {
 		mat[x][y]=r;
 	}
 	
-	int ma=-1;
+	ll ma=-1;
 	int cur[51];
 	int pat[51];
 	FOR(i,N) cur[i]=i;
@@ -32,11 +32,24 @@ void solve() {
 	srand(time(NULL));
 	FOR(i,100000) {
 		random_shuffle(cur,cur+N);
-		int tot=0;
+		ll tot=0;
 		FOR(y,N) FOR(x,y) tot+=mat[cur[x]][cur[y]];
-		if(tot>ma) {
-			ma=tot;
-			FOR(j,N) pat[j]=cur[j];
+		FOR(j,100) {
+			x=rand()%N;
+			y=rand()%N;
+			if(x==y) continue;
+			if(x>y) swap(x,y);
+			int diff=mat[cur[y]][cur[x]]-mat[cur[x]][cur[y]];
+			for(r=x+1;r<=y-1;r++) diff+=mat[cur[r]][cur[x]]-mat[cur[x]][cur[r]]+mat[cur[y]][cur[r]]-mat[cur[r]][cur[y]];
+			
+			if(diff>0) {
+				tot += diff;
+				swap(cur[x],cur[y]);
+				if(tot>ma) {
+					ma=tot;
+					FOR(x,N) pat[x]=cur[x];
+				}
+			}
 		}
 	}
 	
