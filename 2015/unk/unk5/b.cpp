@@ -12,24 +12,15 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-vector<ll> enumdiv(ll n) {
-	vector<ll> S;
-	for(ll i=1;i*i<=n;i++) if(n%i==0) {S.push_back(i); if(i*i!=n) S.push_back(n/i); }
-	sort(S.begin(),S.end());
-	return S;
-}
-
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	ll A,D,M;
 	cin>>A>>D>>M;
-	vector<ll> V=enumdiv(M);
+	set<ll> V;
+	for(ll i=1;i*i<=M;i++) if(M%i==0) V.insert(i), V.insert(M/i);
 	FORR(r,V) {
-		if(__gcd(A,r)!=D) continue;
-		ll g=__gcd(A,r);
-		if(A*r/g!=M) continue;
-		return _P("%lld\n",r);
+		if(__gcd(A,r)==D && A*r/__gcd(A,r)==M) return _P("%lld\n",r);
 	}
 	return _P("-1\n");
 }
