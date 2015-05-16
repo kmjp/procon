@@ -71,27 +71,12 @@ int P[21][100005],D[100005];
 void dfs(int cur) {
 	ITR(it,E[cur]) if(*it!=P[0][cur]) D[*it]=D[cur]+1, P[0][*it]=cur, dfs(*it);
 }
-pair<int,int> lca(int a,int b) {
+int dist(int a,int b) {
 	int ret=0,i,aa=a,bb=b;
 	if(D[aa]>D[bb]) swap(aa,bb);
 	for(i=19;i>=0;i--) if(D[bb]-D[aa]>=1<<i) bb=P[i][bb];
 	for(i=19;i>=0;i--) if(P[i][aa]!=P[i][bb]) aa=P[i][aa], bb=P[i][bb];
-	return make_pair((aa==bb)?aa:P[0][aa], D[a]+D[b]-2*D[(aa==bb)?aa:P[0][aa]]);
-}
-int getpar(int cur,int up) {
-	int i;
-	FOR(i,20) if(up&(1<<i)) cur=P[i][cur];
-	return cur;
-}
-
-int ok(int A,int B,int C) {
-	if(A==B || B==C) return 1;
-	pair<int,int> lca_ab=lca(A,B);
-	pair<int,int> lca_bc=lca(B,C);
-	int pre_ab = (lca_ab.first==B)?getpar(A,lca_ab.second-1):getpar(B,1);
-	int pre_bc = (lca_bc.first==B)?getpar(C,lca_bc.second-1):getpar(B,1);
-	
-	return pre_ab != pre_bc;
+	return D[a]+D[b]-2*D[(aa==bb)?aa:P[0][aa]];
 }
 
 void solve() {
@@ -113,7 +98,7 @@ void solve() {
 	cin>>Q;
 	while(Q--) {
 		cin>>x>>y>>r;
-		if(ok(ID[x-1],ID[y-1],ID[r-1])) cout<<"OK"<<endl;
+		if(dist(ID[x-1],ID[y-1])+dist(ID[y-1],ID[r-1])==dist(ID[x-1],ID[r-1])) cout<<"OK"<<endl;
 		else cout<<"NG"<<endl;
 	}
 }
