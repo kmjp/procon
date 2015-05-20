@@ -17,8 +17,8 @@ void solve() {
 	int i,j,k,l,r,x,y; string s;
 	cin>>A>>B>>S;
 	
-	if(abs(A-S)<=abs(B-S)) {
-		cout<<abs(A-S)+S<<endl;
+	if(abs(A-S)<=abs(B-S) || S==1) {
+		x=abs(A-S)+S;
 	}
 	else {
 		x=abs(B-S);
@@ -29,8 +29,8 @@ void solve() {
 			x+=(S-1)+2;
 		}
 		else x+=S;
-		cout<<x<<endl;
 	}
+	cout<<x<<endl;
 }
 
 
