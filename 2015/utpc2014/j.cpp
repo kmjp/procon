@@ -26,7 +26,7 @@ public:
 };
 
 int N,Q,NB;
-BIT<ll,20> coln,cols,po;
+BIT<ll,20> coln,cols;
 int X[202000],A[202000],C[202000];
 int rev[202000];
 
@@ -63,7 +63,6 @@ void change(int id, bool add) {
 	if(add) {
 		S.insert(make_pair(x,id));
 		rev[x] = id;
-		po.add(x,1);
 		coln.add(A[id],1);
 		cols.add(A[id],A[id]);
 		p.insert(x);
@@ -71,7 +70,6 @@ void change(int id, bool add) {
 	else {
 		S.erase(make_pair(x,rev[x]));
 		rev[x] = -1;
-		po.add(x,-1);
 		coln.add(A[id],-1);
 		cols.add(A[id],-A[id]);
 		p.erase(x);
