@@ -11,7 +11,6 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int A[2024][1024];
 ll mo=1000000007;
 ll N,K;
 
@@ -19,9 +18,9 @@ vector<ll> mult(vector<ll>& v,vector<ll>& v2) {
 	int i,j;
 	vector<ll> t(2*K,0);
 	FOR(i,K) FOR(j,K) t[i+j] += v[i]*v2[j]%mo;
-	for(i=K;i<2*K-1;i++) {
+	for(i=2*K-2;i>=K;i--) {
 		ll ti=t[i]%mo;
-		FOR(j,K) t[j] += A[i][j]*ti % mo;
+		for(j=1;j<=K;j++) t[i-j] += ti;
 	}
 	FOR(j,K) ((t[j]%=mo)+=mo)%=mo;
 	t.resize(K);
@@ -34,15 +33,6 @@ void solve() {
 	cin>>K>>N;
 	if(N<=K) return _P("1\n");
 	
-	FOR(i,K) A[i][i]=1;
-	FOR(i,K) {
-		ll t=0;
-		for(j=0;j<=2*K;j++) {
-			if(j>=K) A[j][i] = t, t-=A[j-K][i];
-			(t += A[j][i])%=mo;
-			if(t<0) t+=mo;
-		}
-	}
 	
 	vector<ll> R(K,0),V(K,0);
 	R[0]=V[1]=1;
