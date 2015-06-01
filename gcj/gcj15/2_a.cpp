@@ -30,46 +30,31 @@ void solve(int _loop) {
 	FOR(y,H) cin>>S[y];
 	
 	FOR(y,H) {
-		L[y][0]=-1;
-		for(x=1;x<W;x++) {
-			if(S[y][x-1]=='.') L[y][x]=L[y][x-1];
-			else L[y][x]=x-1;
-		}
-		R[y][W-1]=W;
-		for(x=W-2;x>=0;x--) {
-			if(S[y][x+1]=='.') R[y][x]=R[y][x+1];
-			else R[y][x]=x+1;
-		}
+		L[y][0]=0;
+		for(x=1;x<W;x++)  L[y][x]=(S[y][x-1]!='.')|L[y][x-1];
+		R[y][W-1]=0;
+		for(x=W-2;x>=0;x--) R[y][x]=(S[y][x+1]!='.')|R[y][x+1];
 	}
 	FOR(x,W) {
-		T[0][x]=-1;
-		for(y=1;y<H;y++) {
-			if(S[y-1][x]=='.') T[y][x]=T[y-1][x];
-			else T[y][x]=y-1;
-		}
-		B[H-1][x]=H;
-		for(y=H-2;y>=0;y--) {
-			if(S[y+1][x]=='.') B[y][x]=B[y+1][x];
-			else B[y][x]=y+1;
-		}
+		T[0][x]=0;
+		for(y=1;y<H;y++) T[y][x]=(S[y-1][x]!='.')|T[y-1][x];
+		B[H-1][x]=0;
+		for(y=H-2;y>=0;y--) B[y][x]=(S[y+1][x]!='.') | B[y+1][x];
 	}
 	cost=0;
 	FOR(y,H) FOR(x,W) if(S[y][x]!='.') {
-		int cy=y,cx=x;
-		if(S[y][x]=='^') cy=T[y][x];
-		else if(S[y][x]=='v') cy=B[y][x];
-		else if(S[y][x]=='<') cx=L[y][x];
-		else if(S[y][x]=='>') cx=R[y][x];
+		if(S[y][x]=='^' && T[y][x]) continue;
+		else if(S[y][x]=='v' && B[y][x]) continue;
+		else if(S[y][x]=='<' && L[y][x]) continue;
+		else if(S[y][x]=='>' && R[y][x]) continue;
 		
-		if(cy>=0 && cy<H && cx>=0 && cx<W) continue;
-		if(L[y][x]>=0 || R[y][x]<W || T[y][x]>=0 || B[y][x]<H) {
+		if(L[y][x] || R[y][x] || T[y][x] || B[y][x]) {
 			cost++;
 		}
 		else {
 			return _P("Case #%d: IMPOSSIBLE\n",_loop);
 		}
 	}
-	
 	
 	_P("Case #%d: %d\n",_loop,cost);
 }
