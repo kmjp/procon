@@ -100,10 +100,8 @@ void solve(int _loop) {
 	int W=M.size();
 	MaxFlow_dinic<int> mf;
 	
-	mf.add_edge(0,2,101000);
-	mf.add_edge(3,1,101000);
-	FOR(i,W) mf.add_edge(2+N+i,2+N+W+i,1);
-	FOR(i,N) FORR(r,P[i]) mf.add_edge(2+i,2+N+r,101000), mf.add_edge(2+N+W+r,2+i,101000);
+	FOR(i,W) mf.add_edge(N+i,N+W+i,1);
+	FOR(i,N) FORR(r,P[i]) mf.add_edge(i,N+r,101000), mf.add_edge(N+W+r,i,101000);
 	
 	_P("Case #%d: %d\n",_loop,mf.maxflow(0,1));
 }
