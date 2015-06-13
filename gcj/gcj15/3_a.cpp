@@ -32,7 +32,7 @@ void solve(int _loop) {
 	
 	ma[0]=mi[0]=S[0];
 	set<int> SS;
-	map<int,vector<int> > ev[2];
+	map<int,int> ev[2];
 	for(i=0;i<N;i++) {
 		ma[i]=mi[i]=S[i];
 		if(i) {
@@ -40,17 +40,17 @@ void solve(int _loop) {
 			mi[i]=min(mi[i],mi[P[i]]);
 		}
 		if(ma[i]-mi[i]>D) continue;
-		ev[0][mi[i]].push_back(i);
-		ev[1][ma[i]].push_back(i);
+		ev[0][mi[i]]++;
+		ev[1][ma[i]]++;
 		SS.insert(mi[i]);
 		SS.insert(ma[i]-D);
 	}
 	
 	int ret=0, cnt=0;
 	FORR(r,SS) {
-		FORR(r1,ev[1][r+D]) cnt++;
+		cnt += ev[1][r+D];
 		ret=max(ret,cnt);
-		FORR(r1,ev[0][r]) cnt--;
+		cnt -= ev[0][r];
 	}
 	
 	_P("Case #%d: %d\n",_loop,ret);
