@@ -11,9 +11,7 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int pre[1010101];
 ll tot[1010101];
-ll tmul[1010101];
 ll modpow(ll a, ll n,int mo) {
 	ll r=1;
 	while(n) r=r*((n%2)?a:1)%mo,a=a*a%mo,n>>=1;
@@ -25,31 +23,15 @@ class ColorfulLineGraphs {
 	int countWays(long long N, long long K, int M) {
 		ll ret=1,mul=1,i;
 		
-		MINUS(pre);
-		for(i=1;i<=N;i++) {
-			ll pm=mul;
-			(mul+=(K-1))%=M;
+		for(i=0;i<=N;i++) {
+			if(i && mul==1) break;
 			ret=ret*mul%M;
-			if(pre[mul]>=0) break;
-			pre[mul]=i;
-			tot[mul]=pm;
+			tot[i]=ret;
+			(mul+=K-1)%=M;
 		}
 		
 		if(i>N) return ret;
-		
-		ll st=pre[mul], period=i-pre[mul];
-		
-		ll t=1;
-		FOR(i,period) {
-			tmul[i]=t;
-			t=t*mul%M;
-			(mul+=(K-1))%=M;
-		}
-		
-		ret=tot[mul]*modpow(t,(N-(st-1))/period,M)%M;
-		ret=ret*tmul[(N-(st-1))%period]%M;
-		
-		return ret;
+		return modpow(ret,N/i,M)*tot[N%i]%M;
 	}
 	
 // BEGIN CUT HERE
@@ -62,7 +44,7 @@ class ColorfulLineGraphs {
 	void test_case_1() { long long Arg0 = 15LL; long long Arg1 = 3LL; int Arg2 = 1000000; int Arg3 = 510625; verify_case(1, Arg3, countWays(Arg0, Arg1, Arg2)); }
 	void test_case_2() { long long Arg0 = 100000LL; long long Arg1 = 100000LL; int Arg2 = 999999; int Arg3 = 185185; verify_case(2, Arg3, countWays(Arg0, Arg1, Arg2)); }
 	void test_case_3() { long long Arg0 = 1000000000000LL; long long Arg1 = 6LL; int Arg2 = 1000000; int Arg3 = 109376; verify_case(3, Arg3, countWays(Arg0, Arg1, Arg2)); }
-	void test_case_4() { long long Arg0 = 5000LL; long long Arg1 = 1000000000000LL; int Arg2 = 314159; int Arg3 = 202996; verify_case(4, Arg3, countWays(Arg0, Arg1, Arg2)); }
+	void test_case_4() { long long Arg0 = 479490454733LL; long long Arg1 = 261349224448LL; int Arg2 = 848601; int Arg3 = 188578; verify_case(4, Arg3, countWays(Arg0, Arg1, Arg2)); }
 
 // END CUT HERE
 
