@@ -56,8 +56,7 @@ void solve() {
 	FOR(i,2*N) if(num[i][0]+num[i][1]>=3) ret += (1LL*num[i][0]*(num[i][0]-1)+1LL*num[i][1]*(num[i][1]-1))/2;
 	if(ret) return _P("1 %I64d\n",ret/2);
 	
-	FOR(i,N) ret += M-E[i].size();
-	_P("2 %I64d\n",ret);
+	_P("2 %I64d\n",M*(N-2));
 	
 }
 
