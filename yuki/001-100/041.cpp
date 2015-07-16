@@ -5,38 +5,29 @@ typedef signed long long ll;
 #undef _P
 #define _P(...) (void)printf(__VA_ARGS__)
 #define FOR(x,to) for(x=0;x<to;x++)
+#define FORR(x,arr) for(auto& x:arr)
 #define ITR(x,c) for(__typeof(c.begin()) x=c.begin();x!=c.end();x++)
 #define ALL(a) (a.begin()),(a.end())
 #define ZERO(a) memset(a,0,sizeof(a))
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-ll memo[1000051][10];
-ll mo=1000000009;
-int T;
-ll M;
-
-ll dpdp(int V,int D) {
-	int i;
-	if(V<0) return 0;
-	if(V==0) return 1;
-	if(D==0) return 1;
-	if(memo[V][D]>=0) return memo[V][D];
-	
-	memo[V][D]=0;
-	for(i=1;i<=D;i++) memo[V][D]+=dpdp(V-i,i);
-	memo[V][D]+=dpdp(V-1,0);
-	return memo[V][D]%=mo;
-}
+ll mo = 1000000009;
+ll dp[200000];
+ll sum[200000];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	MINUS(memo);
-	cin>>T;
-	while(T--) {
+	dp[0]=1;
+	for(j=1;j<=9;j++) FOR(i,100001) (dp[i+j]+=dp[i])%=mo;
+	FOR(i,100001) sum[i]=((i?sum[i-1]:0)+dp[i])%mo;
+	
+	cin>>x;
+	FOR(i,x) {
+		ll M;
 		cin>>M;
-		cout << dpdp(M/111111,9) << endl;
+		cout<<sum[M/111111]<<endl;
 	}
 }
 
