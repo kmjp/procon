@@ -23,12 +23,6 @@ int cross(int x1,int y1,int x2,int y2,int x3,int y3,int x4,int y4) {
 	ll c1=XX[0]*YY[1]-XX[1]*YY[0];
 	ll c2=XX[0]*YY[2]-XX[2]*YY[0];
 	if((c1<0&&c2<0)||(c1>0&&c2>0)) return 0;
-	XX[0]=x4-x3; YY[0]=y4-y3;
-	XX[1]=x1-x3; YY[1]=y1-y3;
-	XX[2]=x2-x3; YY[2]=y2-y3;
-	c1=XX[0]*YY[1]-XX[1]*YY[0];
-	c2=XX[0]*YY[2]-XX[2]*YY[0];
-	if((c1<0&&c2<0)||(c1>0&&c2>0)) return 0;
 	return 1;
 }
 
