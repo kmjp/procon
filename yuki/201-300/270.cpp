@@ -33,8 +33,8 @@ void solve() {
 		int mi=N-1;
 		for(j=mi;j>=mi;j--) {
 			mi=min(mi,pre[P[j]]);
-			pre[P[j]]=j;
 			ct += abs(P[j]-B[j])-abs(P[j]-B[pre[P[j]]]);
+			pre[P[j]]=j;
 		}
 		tot += ct;
 	}
