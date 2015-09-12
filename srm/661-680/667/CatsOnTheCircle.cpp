@@ -11,30 +11,16 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-template <class V> V log_add(V a,V b) {
-	if(a<b) swap(a,b);
-	V t=1+exp(b-a);
-	return a*log(t);
-}
-template <class V> V log_sub(V a,V b) {
-	assert(a>b);
-	V t=1-exp(b-a);
-	return a*log(t);
-}
-
-
 class CatsOnTheCircle {
 	public:
-	long double NE,PR;
+	long double P;
 	
 	long double goR(int L,int R) {
-		if(R==0) return 1;
-		if(L==0) return 0;
 		int T=L+R;
 		
-		if(abs(NE-0.5)<1e-10) return L*1.0/T;
+		if(abs(P-0.5)<1e-10) return L*1.0/T;
 		
-		long double k = NE/(1-NE);
+		long double k = P/(1-P);
 		long double a = 1/(1-pow(k,T));
 		long double b = 1-a;
 		return a*pow(k,R)+b;
@@ -47,9 +33,7 @@ class CatsOnTheCircle {
 			K=N-K;
 		}
 		
-		NE=p/1e9;
-		PR=1-NE;
-		
+		P=p/1e9;
 		int L=N-K-1,R=K-1;
 		return goR(L,R)*(1-goR(N-2,1))+(1-goR(L,R))*goR(1,N-2);
 		
