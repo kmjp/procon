@@ -13,22 +13,19 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-int X[1010101],Y[1010101];
-pair<pair<int,int>,pair<pair<int,int>,int> > P[1010101];
+pair<pair<int,int>,int> P[1010101];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N;
 	FOR(i,N) {
-		cin>>X[i]>>Y[i];
+		cin>>x>>y;
 		
-		P[i]={{X[i]/1000,((X[i]/1000)%2?-1:1)*(Y[i]/1000)},{{X[i],Y[i]},i}};
+		P[i]={{x/1000,((x/1000)%2?-1:1)*y},i};
 	}
 	sort(P,P+N);
-	FOR(i,N) {
-		_P("%d%c",P[i].second.second+1,(i==N-1)?'\n':' ');
-	}
+	FOR(i,N) _P("%d%c",P[i].second+1,(i==N-1)?'\n':' ');
 }
 
 
