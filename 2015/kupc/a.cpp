@@ -23,15 +23,11 @@ void solve() {
 		cin>>s;
 		FOR(i,s.size()) {
 			dp[i+1]=dp[i];
-			if(i>=4) {
-				if(s.substr(i-4,5)=="tokyo" || s.substr(i-4,5)=="kyoto") {
-					dp[i+1]=max(dp[i+1],dp[i+1-5]+1);
-				}
+			if(i>=4) if(s.substr(i-4,5)=="tokyo" || s.substr(i-4,5)=="kyoto") {
+				dp[i+1]=max(dp[i+1],dp[i+1-5]+1);
 			}
 		}
 		cout<<dp[s.size()]<<endl;
-		
-		
 	}
 	
 }

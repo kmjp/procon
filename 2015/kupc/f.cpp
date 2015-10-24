@@ -24,10 +24,7 @@ void solve() {
 	N=A.size();
 	stack<int> S;
 	FOR(i,N) {
-		if(isdigit(A[i])) {
-			L[i]=R[i]=i;
-		}
-		else {
+		if(!isdigit(A[i])) {
 			R[i]=S.top();
 			S.pop();
 			L[i]=S.top();
@@ -46,7 +43,6 @@ void solve() {
 			Q.push(L[x]);
 			Q.push(R[x]);
 		}
-		
 	}
 	reverse(ALL(s));
 	cout<<s<<endl;
