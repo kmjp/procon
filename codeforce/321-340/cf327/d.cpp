@@ -23,13 +23,6 @@ void solve() {
 	cin>>N>>K>>S;
 	FOR(i,N) cin>>Q[i];
 	
-	if(S>N*(N-1)/2 || K==N) {
-		sort(Q,Q+N);
-		int tot=0;
-		FOR(i,K) tot+=Q[i];
-		return _P("%d\n",tot);
-	}
-	
 	FOR(x,N) FOR(y,150*80) from[x][y]=1<<29;
 	from[0][0]=0;
 	for(i=N-1;i>=0;i--) {
@@ -46,7 +39,7 @@ void solve() {
 	}
 	
 	int mi=1<<29;
-	FOR(i,S+1) mi=min(mi,from[K][i]);
+	FOR(i,min(S+1,N*(N-1)/2+1)) mi=min(mi,from[K][i]);
 	cout<<mi<<endl;
 	
 }
