@@ -53,13 +53,9 @@ double fast() {
 				r = max(0,min(4-r,3));
 				curmask |= r<<(2*x);
 			}
-			FOR(cur,1<<W) {
-				int nmask = memomask[curmask | failmask[cur]];
-				ret += p[cur]*dp[y][up]*__builtin_popcount(nmask);
-				dp[y+1][nmask] += p[cur]*dp[y][up];
-				
-			}
+			FOR(cur,1<<W) dp[y+1][memomask[curmask | failmask[cur]]] += p[cur]*dp[y][up];
 		}
+		FOR(mask,1<<W) ret += dp[y+1][mask]*__builtin_popcount(mask);
 	}
 	return ret;
 }
