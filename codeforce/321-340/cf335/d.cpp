@@ -14,7 +14,7 @@ typedef signed long long ll;
 
 int N;
 int A[101010],B[101010],C[101010],D[101010];
-vector<int> VA,VB;
+vector<int> VA;
 set<pair<int,int> > ST[500];
 set<pair<int,int> > S[200000];
 int from[101010],cost[101010];
@@ -23,27 +23,19 @@ void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	VA.push_back(0);
-	VB.push_back(0);
 	VA.push_back(1<<30);
-	VB.push_back(1<<30);
 	queue<int> Q;
 	cin>>N;
 	FOR(i,N) {
 		cin>>A[i]>>B[i]>>C[i]>>D[i];
 		VA.push_back(A[i]);
 		VA.push_back(C[i]);
-		VB.push_back(B[i]);
-		VB.push_back(D[i]);
 	}
 	sort(ALL(VA));
-	sort(ALL(VB));
 	VA.erase(unique(ALL(VA)),VA.end());
-	VB.erase(unique(ALL(VB)),VB.end());
 	FOR(i,N) {
 		A[i]=lower_bound(ALL(VA),A[i])-VA.begin();
-		B[i]=lower_bound(ALL(VB),B[i])-VB.begin();
 		C[i]=lower_bound(ALL(VA),C[i])-VA.begin();
-		D[i]=lower_bound(ALL(VB),D[i])-VB.begin();
 		if(A[i]||B[i]) {
 			ST[A[i]/500].insert({B[i],i});
 			S[A[i]].insert({B[i],i});
