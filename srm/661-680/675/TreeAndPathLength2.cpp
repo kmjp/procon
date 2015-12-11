@@ -16,13 +16,12 @@ int memo[51][1020][2];
 class TreeAndPathLength2 {
 	public:
 	int ok(int n,int s,int par) {
-		if(n<=0) return (s==0);
+		if(n<=1) return (s==0);
 		if(memo[n][s][par]!=-1) return memo[n][s][par];
 		int ret=0;
 		int i;
-		for(i=1;i<=n;i++) {
-			int sc=i*(i-1)/2;
-			if(par) sc+=i;
+		for(i=1;i<=n-1;i++) {
+			int sc=(i+par)*(i+par-1)/2;
 			if(sc>s) continue;
 			ret |= ok(n-i,s-sc,1);
 		}
@@ -32,7 +31,7 @@ class TreeAndPathLength2 {
 	
 	string possible(int n, int s) {
 		MINUS(memo);
-		if(ok(n-1,s,0)) return "Possible";
+		if(ok(n,s,0)) return "Possible";
 		else return "Impossible";
 		
 	}
