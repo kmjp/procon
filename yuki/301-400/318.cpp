@@ -14,13 +14,13 @@ typedef signed long long ll;
 
 int N,A[101010];
 map<int,int> last;
-vector<int> sev[101010],eev[101010];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N;
 	FOR(i,N) cin>>A[i], last[A[i]]=i;
+	
 	set<int> S;
 	FOR(i,N) {
 		S.insert(A[i]);
