@@ -14,19 +14,16 @@ typedef signed long long ll;
 class DoubleOrOneEasy {
 	public:
 	int minimalSteps(int a, int b, int newA, int newB) {
-		ll A=a, B=b;
-		ll TA=newA, TB=newB;
-		ll mi=1<<30,i;
+		int mi=1<<30,i;
 		
 		for(int k=0;k<=30;k++) {
-			if((B-A)<<k==TB-TA) {
-				ll x=TA;
-				ll t=0;
+			if((ll)(b-a)<<k==(newB-newA)) {
+				int x=newA, t=0;
 				FOR(i,k) {
 					if(x%2) x--, t++;
 					x/=2, t++;
 				}
-				if(x>=A) mi=min(mi,t+x-A);
+				if(x>=a) mi=min(mi,t+x-a);
 			}
 		}
 		
