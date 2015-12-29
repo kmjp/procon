@@ -15,20 +15,20 @@ typedef signed long long ll;
 int N;
 int A[51];
 int sum,mi=1000;
-int memo[3000][51][2];
+int memo[3000][51];
 
-int win(int tot,int mi,int odd) {
-	int& ret=memo[tot][mi][odd];
+int win(int tot,int mi) {
+	int& ret=memo[tot][mi];
 	if(ret>=0) return ret;
 	if(tot==0) return 0;
 	ret = 0;
 	
 	if(tot>mi*N) {
-		if(win(tot-1,mi,odd^1)==0) ret=1;
+		if(win(tot-1,mi)==0) ret=1;
 	}
 	if(mi>0) {
-		if(win(tot-N,mi-1,odd^(N%2))==0) ret=1;
-		if(win(tot-1,mi-1,odd^((N-1)%2))==0) ret=1;
+		if(win(tot-N,mi-1)==0) ret=1;
+		if(win(tot-1,mi-1)==0) ret=1;
 	}
 	return ret;
 }
@@ -40,7 +40,7 @@ void solve() {
 	FOR(i,N) cin>>A[i], sum+=A[i], mi=min(mi,A[i]);
 	MINUS(memo);
 	
-	if(win(sum,mi,sum%2)) cout<<"Iori"<<endl;
+	if(win(sum,mi)) cout<<"Iori"<<endl;
 	else cout<<"Yayoi"<<endl;
 }
 
