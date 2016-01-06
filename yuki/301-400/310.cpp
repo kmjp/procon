@@ -18,7 +18,6 @@ int A[4040],B[4040];
 int in[4040],out[4040];
 int st,en;
 ll fact[8080];
-int self[4040];
 
 ll mo=1000000007;
 int id[4040],rid[4040];
@@ -50,7 +49,7 @@ ll det_mo(int N) {
 		FOR(z,N) mat[x][z]=rev*mat[x][z]%mo;
 		for(y=x+1;y<N;y++) if(mat[y][x]) {
 			rev=mat[y][x];
-			for(z=x;z<N;z++) if(mat[x][z]) mat[y][z]=((mat[y][z]-mat[x][z]*rev)%mo+mo)%mo;
+			for(z=x;z<N;z++) if(mat[x][z]) mat[y][z]=(mat[y][z]+mo*mo-mat[x][z]*rev)%mo;
 		}
 	}
 	return ret;
@@ -66,31 +65,26 @@ void solve() {
 	cin>>N>>M;
 	FOR(i,N) {
 		FOR(j,N) edge[i][j]=-1;
-		in[i]=out[i]=edge[i][i]=N-1;
-		self[i]=1;
+		in[i]=out[i]=N;
+		edge[i][i]=N-1;
 	}
 	
 	FOR(i,M) {
 		cin>>x>>y;
 		x--,y--;
 		
-		if(x==y) {
-			self[x]=0;
-		}
-		else {
-			out[x]--;
-			in[y]--;
-			edge[x][y]=0;
-			edge[y][y]--;
-		}
+		out[x]--;
+		in[y]--;
+		edge[x][y]++;
+		edge[y][y]--;
 	}
 	
 	x=0;
 	st=en=-1;
-	
 	FOR(i,N) {
-		if(in[i]==0 && out[i]==0 && self[i]==0) id[i]=-1;
+		if(in[i]==0 && out[i]==0) id[i]=-1;
 		else id[i]=x, rid[x]=i, x++;
+		
 		if(abs(in[i]-out[i])>1) return _P("0\n");
 		if(in[i]==out[i]+1) {
 			if(en!=-1) return _P("0\n");
@@ -103,31 +97,19 @@ void solve() {
 	}
 	if(x==0 || x==1) return _P("1\n");
 	
-	
-	ll pat=1;
+	ll pat=(N*N-M)%mo;
 	N=x;
 	if(st>=0) { // odd
 		in[st]++;
 		out[en]++;
-		FOR(i,N) if(self[rid[i]]) pat = pat*in[rid[i]] % mo;
 		edge[en][st]--;
 		edge[st][st]++;
-	}
-	else {
-		ll tot=1;
-		FOR(i,N) if(self[rid[i]]) tot = tot*in[rid[i]] % mo;
-		pat=0;
-		FOR(i,N) {
-			if(self[rid[i]]) (pat += tot*(in[rid[i]]+1)%mo) %= mo;
-			else (pat += tot*in[rid[i]]) %= mo;
-		}
+		pat=1;
 	}
 	
-	ll deg=1;
-	FOR(i,N) deg = deg*fact[in[rid[i]]-1]%mo;
+	FOR(i,N) pat = pat*fact[in[rid[i]]-1]%mo;
 	FOR(i,N) FOR(j,N) mat[i][j]=edge[rid[i]][rid[j]];
-	cout<<(pat*deg%mo*det_mo(N-1)%mo)<<endl;
-	
+	cout<<(pat*det_mo(N-1)%mo)<<endl;
 	
 }
 
