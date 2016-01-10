@@ -9,8 +9,4 @@ N=input()
 
 X=A*B/gcd(A,B)
 
-V=0
-while V < N:
-	V += X
-
-print V
+print (N+X-1)/X*X
