@@ -33,12 +33,12 @@ void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N>>K;
-	ll p=1,d=K;
+	ll p=1;
 	FOR(i,N) bt.add(i+1,1);
 	FOR(i,N) {
 		ll cand=N-i;
-		fac[i]=cand*p/d;
-		p=cand*p%d;
+		fac[i]=cand*p/K;
+		p=cand*p%K;
 	}
 	for(i=N-1;i>=0;i--) {
 		if(fac[i]!=0) {
