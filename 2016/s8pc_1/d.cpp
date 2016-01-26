@@ -13,8 +13,6 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int H,W,K;
-vector<pair<int,int>> V;
-vector<int> M[2020];
 
 int NG[2020][2020];
 ll dp[2020][2020];
@@ -25,24 +23,11 @@ void solve() {
 	
 	cin>>H>>W>>K;
 	H--,W--;
-	FOR(i,K) cin>>x>>y, V.push_back({x-1,y-1});
-	
-	sort(ALL(V));
-	V.erase(unique(ALL(V)),V.end());
-	FORR(r,V) M[r.first+r.second+1].push_back(r.first);
-	FOR(i,2020) {
-		if(M[i].size()==1) {
-			x=M[i][0];
-			FOR(j,W+1) if(j!=x&&j!=x+1) NG[j][i-j]=1;
-		}
-		else if(M[i].size()==2) {
-			if(abs(M[i][0]-M[i][1])>1) return _P("0\n");
-			x=max(M[i][0],M[i][1]);
-			FOR(j,W+1) if(j!=x) NG[j][i-j]=1;
-		}
-		else if(M[i].size()>2) {
-			return _P("0\n");
-		}
+	FOR(i,K) {
+		cin>>x>>y;
+		x--,y--;
+		r=x+y+1;
+		FOR(j,r+1) if(j!=x&&j!=x+1) NG[j][r-j]=1;
 	}
 	
 	dp[0][0]=1;
@@ -52,8 +37,6 @@ void solve() {
 		dp[x][y]%=mo;
 	}
 	cout<<dp[W][H]<<endl;
-	
-	
 }
 
 
