@@ -12,44 +12,35 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
+int is[1010][1010];
+
 class BearSpans {
 	public:
 	vector <int> findAnyGraph(int n, int m, int k) {
 		int x,y,i;
 		if(k>10 || n<1<<k) return {-1};
 		
-		int left=m-(n-1);
+		ZERO(is);
+		
 		vector<int> R;
 		vector<pair<int,int>> V;
 		FOR(i,1<<(k-1)) V.push_back({i*2+1,i*2+2});
 		V.back().second=n;
 		
-		FORR(r,V) for(x=r.first;x<r.second;x++) R.push_back(x),R.push_back(x+1);
-		int st=V.back().first;
-		int ed=V.back().second;
-		
-		for(x=st;x<=ed;x++) for(y=x+2;y<=ed;y++) if(left) {
-			left--;
-			R.push_back(x);
-			R.push_back(y);
-		}
+		FORR(r,V) for(x=r.first;x<r.second;x++) R.push_back(x),R.push_back(x+1), is[x][x+1]++, m--;
 		
 		while(V.size()>1) {
 			vector<pair<int,int>> V2;
 			FOR(i,V.size()/2) {
-				left++;
-				for(x=V[i*2].first;x<=V[i*2].second;x++) if(left) {
-					for(y=V[i*2+1].first;y<=V[i*2+1].second;y++) if(left) {
-						left--;
-						R.push_back(x);
-						R.push_back(y);
-					}
-				}
+				R.push_back(V[i*2].first);
+				R.push_back(V[i*2+1].first);
+				m--;
+				is[V[i*2].first][V[i*2+1].first]++;
 				V2.push_back({V[i*2].first,V[i*2+1].second});
 			}
 			swap(V,V2);
 		}
-		
+		FOR(y,n) FOR(x,y) if(is[x+1][y+1]==0 && m) m--, R.push_back(x+1),R.push_back(y+1);
 		return R;
 	}
 	
