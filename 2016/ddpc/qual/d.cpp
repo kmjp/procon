@@ -13,7 +13,6 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N,M,K;
-
 int A[60],B[60];
 ll AS,BS;
 ll ok[22222*110+5];
@@ -25,8 +24,6 @@ void solve() {
 	cin>>N>>M>>K;
 	FOR(i,N) cin>>A[i], AS+=A[i];
 	FOR(i,M) cin>>B[i], BS+=B[i];
-	sort(A,A+N);
-	sort(B,B+M);
 	
 	ll ma=0;
 	if(K==1) {
@@ -43,9 +40,7 @@ void solve() {
 		for(i=-MA;i<=MA;i++) if(dp[i]&1) ma=max(ma,(AS-i)*(BS+i));
 	}
 	
-	
 	cout<<ma<<endl;
-	
 }
 
 
