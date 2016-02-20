@@ -65,27 +65,25 @@ void solve() {
 		E[y-1].push_back(x-1);
 	}
 	dfs(0);
-	FOR(i,19) FOR(x,N) P[i+1][x]=P[i][P[i][x]];
 	dfs2(0,0);
+	FOR(i,19) FOR(x,N) P[i+1][x]=P[i][P[i][x]];
+	
 	while(M--) {
 		cin>>x>>y;
 		x--,y--;
 		if(D[x]>D[y]) swap(x,y);
 		int lc=lca(x,y);
 		
+		ll base=(D[x]-D[lc])+(D[y]-D[lc])+1;
+		double xs,ys=sub_d[y]*1.0/sub_v[y];
 		if(x==lc) {
-			ll base=D[y]-D[x]+1;
 			int yp=getpar(y,D[y]-D[x]-1);
-			double xs=(par_d[x]+sub_d[x]-(sub_d[yp]+sub_v[yp]))*1.0/(N-sub_v[yp]);
-			double ys=sub_d[y]*1.0/sub_v[y];
-			_P("%.12lf\n",base+xs+ys);
+			xs=(par_d[x]+sub_d[x]-(sub_d[yp]+sub_v[yp]))*1.0/(N-sub_v[yp]);
 		}
 		else {
-			ll base=(D[x]-D[lc])+(D[y]-D[lc])+1;
-			double xs=sub_d[x]*1.0/sub_v[x];
-			double ys=sub_d[y]*1.0/sub_v[y];
-			_P("%.12lf\n",base+xs+ys);
+			xs=sub_d[x]*1.0/sub_v[x];
 		}
+		_P("%.12lf\n",base+xs+ys);
 	}
 }
 
