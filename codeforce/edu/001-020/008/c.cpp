@@ -19,7 +19,7 @@ void solve() {
 	cin>>N>>K>>S;
 	
 	FOR(i,N) {
-		if(S[i]-'a'>13) {
+		if(S[i]-'a'>=13) {
 			x=min(S[i]-'a',K);
 			K-=x;
 			S[i]-=x;
