@@ -81,16 +81,14 @@ class SuccessfulMerger {
 		FOR(i,N) bi.add_edge(i,road[i]), NE[i]++, NE[road[i]]++;
 		bi.scc();
 		
-		if(bi.SC.size()==1) return N-2;
-		
-		int ret=N-bi.SC.size();
+		int ret=N-2;
 		FOR(i,bi.SC.size()) {
 			FORR(r,bi.SC[i]) mp[r]=i;
 			if(bi.SC[i].size()>1) {
-				int ok=0;
+				int ok=1;
 				root=i;
-				FORR(r,bi.SC[i]) if(NE[r]==2) ok=1;
-				ret-=ok;
+				FORR(r,bi.SC[i]) if(NE[r]==2) ok=0;
+				ret+=ok;
 			}
 		}
 		FOR(i,N) if(mp[i]!=mp[road[i]]) {
@@ -98,7 +96,6 @@ class SuccessfulMerger {
 			S[mp[road[i]]].insert(mp[i]);
 		}
 		
-		ret += bi.SC.size()-1;
 		FOR(i,bi.SC.size()) if(i!=root && S[i].size()==1) ret--;
 		return ret;
 		
