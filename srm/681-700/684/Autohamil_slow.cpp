@@ -11,19 +11,78 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int mat[51][51];
+class SCC {
+public:
+	static const int MV = 55;
+	vector<vector<int> > SC; int NV,GR[MV],rev[MV];
+private:
+	vector<int> E[MV], RE[MV], NUM; int vis[MV];
+public:
+	void init(int NV) { this->NV=NV; for(int i=0;i<MV;i++) { E[i].clear(); RE[i].clear();}}
+	void add_edge(int x,int y) { E[x].push_back(y); RE[y].push_back(x); }
+	void dfs(int cu) { vis[cu]=1; for(int i=0;i<E[cu].size();i++) if(!vis[E[cu][i]]) dfs(E[cu][i]); NUM.push_back(cu); }
+	void revdfs(int cu, int ind) { int i; vis[cu]=1; GR[cu]=ind; SC[ind].push_back(cu); rev[cu]=ind;
+		FOR(i,RE[cu].size()) if(!vis[RE[cu][i]]) revdfs(RE[cu][i],ind);}
+	void scc() {
+		int c=0; SC.clear(); SC.resize(MV); NUM.clear();
+		ZERO(vis); for(int i=0;i<NV;i++) if(!vis[i]) dfs(i);
+		ZERO(vis); for(int i=NUM.size()-1;i>=0;i--) if(!vis[NUM[i]]){
+			SC[c].clear(); revdfs(NUM[i],c); sort(SC[c].begin(),SC[c].end()); c++;
+		}
+		SC.resize(c);
+	}
+};
 
 class Autohamil {
 	public:
+	int N;
+	vector<int> E[51];
+	vector<ll> M[51];
+	
 	string check(vector <int> z0, vector <int> z1) {
-		int N=z0.size();
-		int i,j,k;
-		ZERO(mat);
-		FOR(i,N) mat[i][z0[i]]=mat[i][z1[i]]=mat[i][i]=1;
-		FOR(k,N) FOR(i,N) FOR(j,N) mat[i][j] |= mat[i][k]&mat[k][j];
-		FOR(i,N) if(mat[0][i]==0) return "Does not exist";
-		FOR(i,N) FOR(j,N) if(!mat[i][j] && !mat[j][i]) return "Does not exist";
-		return "Exists";
+		int i,j;
+		SCC sb;
+		
+		N=z0.size();
+		sb.init(N);
+		FOR(i,N) {
+			sb.add_edge(i,z0[i]);
+			if(z0[i]!=z1[i]) sb.add_edge(i,z1[i]);
+			E[i].clear();
+			M[i].clear();
+		}
+		sb.scc();
+		
+		FOR(i,N) {
+			if(sb.rev[i]!=sb.rev[z0[i]]) E[sb.rev[i]].push_back(sb.rev[z0[i]]);
+			if(sb.rev[i]!=sb.rev[z1[i]] && sb.rev[z0[i]]!=sb.rev[z1[i]]) E[sb.rev[i]].push_back(sb.rev[z1[i]]);
+		}
+		N=sb.SC.size();
+		
+		int in[51]={};
+		FOR(i,N) FORR(r,E[i]) in[r]++;
+		queue<int> Q;
+		if(in[sb.rev[0]]==0) {
+			M[sb.rev[0]].push_back(1LL<<sb.rev[0]);
+			Q.push(sb.rev[0]);
+		}
+		
+		while(Q.size()) {
+			int cur=Q.front();
+			Q.pop();
+			
+			sort(M[cur].begin(),M[cur].end());
+			FOR(i,M[cur].size()-1) if(M[cur][i] & ~M[cur].back()) return "Does not exist";
+			ll nmask=M[cur].back() | (1LL<<cur);
+			if(nmask==(1LL<<N)-1) return "Exists";
+			
+			FORR(r,E[cur]) {
+				M[r].push_back(nmask);
+				if(--in[r]==0) Q.push(r);
+			}
+		}
+		
+		return "Does not exist";
 	}
 	
 // BEGIN CUT HERE
