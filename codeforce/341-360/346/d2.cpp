@@ -23,21 +23,11 @@ void solve() {
 	FOR(i,N+1) X[N-i]-=X[0],Y[N-i]-=Y[0];
 	
 	int ret=0;
-	if(X[N-1]>0) { //clockwise
-		for(i=1;i<N;i++) {
-			if(X[i]-X[i-1]>0&&Y[i+1]>Y[i]) ret++;
-			if(X[i]-X[i-1]<0&&Y[i+1]<Y[i]) ret++;
-			if(Y[i]-Y[i-1]>0&&X[i+1]<X[i]) ret++;
-			if(Y[i]-Y[i-1]<0&&X[i+1]>X[i]) ret++;
-		}
-	}
-	else { //c-clockwise
-		for(i=1;i<N;i++) {
-			if(X[i]-X[i-1]>0&&Y[i+1]<Y[i]) ret++;
-			if(X[i]-X[i-1]<0&&Y[i+1]>Y[i]) ret++;
-			if(Y[i]-Y[i-1]>0&&X[i+1]>X[i]) ret++;
-			if(Y[i]-Y[i-1]<0&&X[i+1]<X[i]) ret++;
-		}
+	for(i=1;i<N;i++) {
+		if(X[i]-X[i-1]>0&&Y[i+1]>Y[i]) ret++;
+		if(X[i]-X[i-1]<0&&Y[i+1]<Y[i]) ret++;
+		if(Y[i]-Y[i-1]>0&&X[i+1]<X[i]) ret++;
+		if(Y[i]-Y[i-1]<0&&X[i+1]>X[i]) ret++;
 	}
 	cout<<ret<<endl;
 	
