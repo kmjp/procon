@@ -40,8 +40,6 @@ class BracketSequenceDiv2 {
 		
 		return ret%mo;
 		
-		
-		
 	}
 	
 // BEGIN CUT HERE
