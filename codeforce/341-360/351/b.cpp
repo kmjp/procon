@@ -30,7 +30,7 @@ void solve() {
 	}
 	if(N==4 || K<=N) return _P("-1\n");
 	_P("%d %d ",A,C);
-	FOR(i,V.size()) _P("%d ",V[V.size()-1-i]);
+	FOR(i,V.size()) _P("%d ",V[i]);
 	_P("%d %d\n",D,B);
 	_P("%d %d ",C,A);
 	FOR(i,V.size()) _P("%d ",V[i]);
