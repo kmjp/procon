@@ -14,10 +14,9 @@ typedef signed long long ll;
 
 int N;
 int T[5050];
-int R[5050];
-set<int> V[5010];
 int cnt[5050];
 int ma=0;
+int R[5050];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -37,8 +36,7 @@ void solve() {
 		}
 	}
 	
-	_P("%d\n",R[1]);
-	//FOR(i,N) _P("%d%s",R[i+1],(i==N-1)?"\n":" ");
+	FOR(i,N) _P("%d%s",R[i+1],(i==N-1)?"\n":" ");
 }
 
 
