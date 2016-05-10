@@ -28,26 +28,13 @@ void solve() {
 		if(i==D) continue;
 		V.push_back(i);
 	}
-	if(N==4) return _P("-1\n");
-	vector<pair<int,int>> R;
-	R.push_back({A,D});
-	R.push_back({B,C});
-	FOR(i,V.size()-1) R.push_back({V[i],V[i+1]});
-	R.push_back({A,V.back()});
-	R.push_back({D,V.back()});
-	R.push_back({B,V[0]});
-	R.push_back({C,V[0]});
-	if(R.size()>K) return _P("-1\n");
-	_P("%d ",A);
-	_P("%d ",D);
+	if(N==4 || K<=N) return _P("-1\n");
+	_P("%d %d ",A,C);
 	FOR(i,V.size()) _P("%d ",V[V.size()-1-i]);
-	_P("%d %d\n",C,B);
-	_P("%d ",C);
-	_P("%d ",B);
+	_P("%d %d\n",D,B);
+	_P("%d %d ",C,A);
 	FOR(i,V.size()) _P("%d ",V[i]);
-	_P("%d %d\n",A,D);
-	
-	
+	_P("%d %d\n",B,D);
 	
 }
 
