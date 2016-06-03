@@ -27,12 +27,14 @@ void solve() {
 	int mi=4;
 	for(i=3;i<=9;i++) {
 		auto r=ask(0,1,2,i);
+		if(r.first==4) return;
 		N[i]=r.first+r.second;
 		mi=min(mi,N[i]);
 	}
 	for(i=3;i<=9;i++) N[i]=N[i]-mi;
 	for(i=0;i<=2;i++) {
 		auto r=ask(i,7,8,9);
+		if(r.first==4) return;
 		N[i]=r.first+r.second-N[7]-N[8]-N[9];
 	}
 	vector<int> V;
