@@ -28,7 +28,7 @@ void solve() {
 	ll ret=modpow(A,N)*X%mo;
 	
 	ll hoge;
-	if(A==1) hoge=N;
+	if(A==1) hoge=N%mo;
 	else {
 		ll Ap=(modpow(A,N)+(mo-1))%mo;
 		ll re=modpow(A-1);
