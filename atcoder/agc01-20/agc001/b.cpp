@@ -15,15 +15,18 @@ typedef signed long long ll;
 ll N,X;
 
 ll hoge(ll a,ll b) {
-	return (a-1)*3;
+	if(a<b) swap(a,b);
+	
+	if(a%b==0) return b*(2*(a/b)-1);
+	else return b*(2*(a/b)) + hoge(b,a%b);
+	
 }
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N>>X;
-	ll g=__gcd(N,X);
-	cout<<hoge(N/g,X/g)*g<<endl;
+	cout<<N+hoge(X,N-X)<<endl;
 }
 
 
