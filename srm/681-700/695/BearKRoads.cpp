@@ -14,7 +14,6 @@ typedef signed long long ll;
 
 class BearKRoads {
 	public:
-	int N,K;
 	vector<pair<int,int>> E;
 	vector<int> X;
 	
@@ -35,8 +34,6 @@ class BearKRoads {
 	int maxHappy(vector <int> x, vector <int> a, vector <int> b, int K) {
 		int i;
 		X=x;
-		N=x.size();
-		this->K=K;
 		vector<pair<int,int>> V;
 		FOR(i,a.size()) V.push_back({x[a[i]]+x[b[i]],i});
 		
