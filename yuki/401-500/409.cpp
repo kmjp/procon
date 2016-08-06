@@ -15,8 +15,8 @@ typedef signed long long ll;
 ll N,A,B,W;
 int D[303030];
 
-ll from[1200];
-ll to[1200];
+ll from[1555];
+ll to[1555];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -26,12 +26,12 @@ void solve() {
 	
 	if(B==0) return _P("%lld\n",W-A*N);
 	
-	FOR(i,1200) from[i]=1LL<<60;
+	FOR(i,1500) from[i]=1LL<<60;
 	from[0]=W;
 	
 	FOR(i,N) {
 		memset(to,0x3f,sizeof(to));
-		FOR(j,1100) {
+		FOR(j,1500) {
 			// not eat
 			to[j+1] = min(to[j+1],from[j]+B*(j+1)-A);
 			// eat
@@ -39,7 +39,7 @@ void solve() {
 		}
 		swap(from,to);
 	}
-	cout<<*min_element(from,from+1101)<<endl;
+	cout<<*min_element(from,from+1501)<<endl;
 	
 	
 }
