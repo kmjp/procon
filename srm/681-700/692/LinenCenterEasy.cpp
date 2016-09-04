@@ -11,8 +11,8 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int from[3030][26];
-int to[3030][26];
+int from[3030];
+int to[3030];
 int stt[1024][26];
 const char base='a';
 ll mo=1000000009;
@@ -41,30 +41,18 @@ class LinenCenterEasy {
 		CreateSTT(S);
 		
 		ZERO(from);
-		from[0][0]=1;
+		from[0]=1;
 		ll ret=0;
 		if(K==0) ret++;
 		for(i=1;i<=L*K+N;i++) {
 			ZERO(to);
 			
-			FOR(j,i) {
-				int lp=j/L;
-				int s=j%L;
-				FOR(c,26) if(from[j][c]) {
-					FOR(d,26) {
-						to[lp*L+stt[s][d]][d] += from[j][c];
-						if(to[lp*L+stt[s][d]][d]>=mo) to[lp*L+stt[s][d]][d]-=mo;
-					}
-				}
-			}
+			FOR(j,i) FOR(c,26) (to[(j/L)*L+stt[j%L][c]] += from[j])%=mo;
 			
 			swap(from,to);
-			if(i>=L*K && i<=L*K+N) {
-				for(j=L*K;j<L*(K+1);j++) FOR(c,26) ret+=from[j][c];
-			}
+			if(i>=L*K && i<=L*K+N) for(j=L*K;j<L*(K+1);j++) ret+=from[j];
 		}
 		return ret%mo;
-		
 	}
 	
 // BEGIN CUT HERE
