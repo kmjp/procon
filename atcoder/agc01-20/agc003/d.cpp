@@ -24,12 +24,10 @@ set<ll> did;
 
 void cprime() {
 	for(int i=2;i<prime_max;i++) if(divp[i]==0) {
-		//M[i]=NP;
 		prime[NP++]=i;
 		for(ll j=1LL*i*i;j>i&&j<prime_max;j+=i) divp[j]=i;
 	}
 }
-
 
 ll hoge(ll n) {
 	int i;
@@ -40,18 +38,6 @@ ll hoge(ll n) {
 		while(n % (a*a*a)==0) n /= a*a*a;
 	}
 	return n;
-}
-
-ll rev(ll n) {
-	ll nn=n*n;
-	int i;
-	FOR(i,NP) {
-		ll a=prime[i];
-		if(a>1000) break;
-		
-		while(nn % (a*a*a)==0) nn /= a*a*a;
-	}
-	return nn;
 }
 
 void solve() {
@@ -71,7 +57,7 @@ void solve() {
 	if(cube) ret -= (cube-1);
 	FORR(r,PV) {
 		if(did.count(r.first)) continue;
-		ll rr=rev(r.first);
+		ll rr=hoge(r.first*r.first);
 		
 		if(PV.count(rr)) ret -= min(r.second,PV[rr]);
 		did.insert(rr);
