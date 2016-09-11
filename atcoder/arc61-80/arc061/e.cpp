@@ -14,20 +14,19 @@ typedef signed long long ll;
 
 int N,M;
 vector<pair<int,int>> EE[1010101];
-vector<int> G[2020202];
-vector<int> GI[2020202];
 int did[101010];
-vector<int> E[1010101];
-int id;
-int dist[1010101];
-int distg[1010101];
+vector<int> TE[101010];
+
+vector<int> E[301010];
+int id=100001;
+int dist[303030];
 
 void dfs(int cur,int x) {
 	if(did[cur]==x) return;
 	did[cur]=x;
-	G[id].push_back(cur);
-	GI[cur].push_back(id);
-	FORR(r,E[cur]) dfs(r,x);
+	E[id].push_back(cur);
+	E[cur].push_back(id);
+	FORR(r,TE[cur]) dfs(r,x);
 }
 
 void solve() {
@@ -36,14 +35,14 @@ void solve() {
 	cin>>N>>M;
 	FOR(i,M) {
 		cin>>x>>y>>r;
-		EE[r].push_back({x-1,y-1});
+		EE[r].push_back({x,y});
 	}
 	MINUS(did);
 	FOR(i,1010100) if(EE[i].size()) {
 		vector<int> V;
 		FORR(e,EE[i]) {
-			E[e.first].push_back(e.second);
-			E[e.second].push_back(e.first);
+			TE[e.first].push_back(e.second);
+			TE[e.second].push_back(e.first);
 			V.push_back(e.first);
 			V.push_back(e.second);
 		}
@@ -53,34 +52,29 @@ void solve() {
 			id++;
 		}
 		FORR(e,EE[i]) {
-			E[e.first].clear();
-			E[e.second].clear();
+			TE[e.first].clear();
+			TE[e.second].clear();
 		}
 	}
 	
 	memset(dist,0x3f,sizeof(dist));
-	memset(distg,0x3f,sizeof(dist));
-	dist[0]=0;
-	vector<int> V;
-	V.push_back(0);
-	
-	FOR(i,1010101) {
-		if(V.empty()) break;
-		vector<int> V2;
-		FORR(r,V) FORR(gi,GI[r]){
-			if(distg[gi]>i) {
-				distg[gi]=i;
-				FORR(g,G[gi]) V2.push_back(g);
+	dist[1]=0;
+	queue<int> Q;
+	Q.push(1);
+	while(Q.size()) {
+		x = Q.front();
+		Q.pop();
+		FORR(e,E[x]) {
+			if(dist[e]>dist[x]+1) {
+				dist[e]=dist[x]+1;
+				Q.push(e);
 			}
 		}
-		sort(ALL(V2));
-		V2.erase(unique(ALL(V2)),V2.end());
-		V.clear();
-		FORR(r,V2) if(dist[r]>i+1) dist[r]=i+1, V.push_back(r);
 	}
 	
-	if(dist[N-1]>0x3f0000) dist[N-1]=-1;
-	cout<<dist[N-1]<<endl;
+	if(dist[N]>0x3f0000) dist[N]=-1;
+	else dist[N]/=2;
+	cout<<dist[N]<<endl;
 	
 	
 }
