@@ -11,34 +11,33 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-ll mo=1000000007;
-ll p2[1010], p3[1010];
-const int CN=401;
-ll C[CN][CN];
 
 
 class IntersectingConvexHull {
 	public:
 	
 	int count(vector <int> x, vector <int> y) {
+		ll mo=1000000007;
+		ll C[110][110];
+		ll p2[110];
 		int N=x.size();
 		int i,j,k;
 		
-		FOR(i,CN) for(j=0;j<=i;j++) C[i][j]=(j==0||j==i)?1:(C[i-1][j-1]+C[i-1][j])%mo;
+		FOR(i,104) for(j=0;j<=i;j++) C[i][j]=(j==0||j==i)?1:(C[i-1][j-1]+C[i-1][j])%mo;
 		
-		p2[0]=p3[0]=1;
-		FOR(i,N) p2[i+1]=p2[i]*2 % mo;
-		FOR(i,N) p3[i+1]=p3[i]*3 % mo;
+		p2[0]=1;
+		FOR(i,104) p2[i+1]=p2[i]*2%mo;
 		
 		ll ret=0;
 		for(i=3;i<=N;i++) for(j=3;i+j<=N;j++) ret = (ret + C[N][i]*C[N-i][j])%mo;
+		
 		FOR(i,N) FOR(j,N) if(i!=j) {
 			int num[2]={};
 			FOR(k,N) if(i!=k && j!=k) num[(1LL*(x[i]-x[j])*(y[k]-y[j])-1LL*(y[i]-y[j])*(x[k]-x[j]))>0]++;
 			if(num[0]<2 || num[1]<2) continue;
 			
-			ll a=p2[num[0]]-1-num[0]+mo;
-			ll b=p2[num[1]]-1-num[1]+mo;
+			ll a=p2[num[0]]-1-num[0];
+			ll b=p2[num[1]]-1-num[1];
 			
 			ret = (ret-a*b%mo+mo)%mo;
 		}
