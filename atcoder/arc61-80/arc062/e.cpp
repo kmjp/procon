@@ -78,7 +78,6 @@ void solve() {
 			}
 			B[R[y]][VV[y]]++;
 		}
-		B[R[y]][VV[x]]++;
 	}
 	cout<<ret<<endl;
 }
