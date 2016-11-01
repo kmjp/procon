@@ -18,21 +18,18 @@ int A[1<<20];
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	int can=(1<<20)-1;
+	int can=-1;
 	cin>>N;
 	FOR(i,N) {
 		cin>>x;
 		can &= x;
-		FOR(j,20) if((x&(1<<j))==0) A[x]|=1<<j;
+		A[x] = (-1)^x;
 	}
 	FOR(i,20) FOR(x,1<<20) A[x&(~(1<<i))] |= A[x];
 	
 	int ret=(can!=0);
-	for(i=0;i<=1000000;i++) if(i+A[i]==(1<<20)-1) ret++;
+	for(i=0;i<=1000000;i++) if((i|A[i])==-1) ret++;
 	cout<<ret<<endl;
-	
-	
-	
 }
 
 
