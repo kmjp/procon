@@ -89,14 +89,11 @@ void solve() {
 			D.update(0,f.second+1,2);
 			F.update(f.second,f.second+1,1LL<<50);
 		}
-		//FOR(i,N) _P("%lld/%lld ",D.getval(i,i+1).first,F.getval(i,i+1).first);
 		
 		auto p = D.getval(0,N);
 		if(p.first>=1LL<<40 || p.first==0) break;
 		
 		ll d = min(flow,F.getval(p.second,N).first);
-		//_P(" : %lld:%d %lld\n",p.first,p.second,d);
-		
 		ret += p.first*d;
 		flow-=d;
 		F.update(p.second,N,-d);
