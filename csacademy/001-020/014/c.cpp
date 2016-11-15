@@ -14,13 +14,12 @@ typedef signed long long ll;
 
 int H,W;
 int A[1010][1010];
-int B[1010][1010];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>H>>W;
-	FOR(y,H) FOR(x,W) cin>>A[y][x], B[y][x]=A[y][x];
+	FOR(y,H) FOR(x,W) cin>>A[y][x];
 	
 	int ma=-1;
 	FOR(y,H) FOR(x,W) if(A[y][x]==1) {
@@ -39,18 +38,14 @@ void solve() {
 			U=min(U,cy);
 			D=max(D,cy);
 			
-			FOR(i,4) {
-				int dd[4]={1,0,-1,0};
-				int ty=cy+dd[i];
-				int tx=cx+dd[i^1];
-				if(tx<0 || ty<0 || tx>=W || ty>=H) continue;
-				if(A[ty][tx]) {
+			for(int ty=max(0,cy-1);ty<=min(H-1,cy+1);ty++) {
+				for(int tx=max(0,cx-1);tx<=min(W-1,cx+1);tx++) if(A[ty][tx]) {
 					A[ty][tx]=0;
 					Q.push(ty*1000+tx);
 				}
 			}
 		}
-		if(L>0 && R<W-1 && U>0 && D<H-1 && (R-L+1)*(D-U+1)==num && B[U-1][L-1]+B[U-1][R+1]+B[D+1][L-1]+B[D+1][R+1]==0) ma=max(ma,num);
+		if(L>0 && R<W-1 && U>0 && D<H-1 && (R-L+1)*(D-U+1)==num) ma=max(ma,num);
 	}
 	cout<<ma<<endl;
 	
