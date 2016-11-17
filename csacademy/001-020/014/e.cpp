@@ -48,9 +48,7 @@ void solve() {
 	MINUS(dp);
 	MINUS(dps);
 	
-	ll ret=0;
-	for(i=0;i<=M;i++) ret+=dpdp(N,i);
-	cout<<ret%mo<<endl;
+	cout<<dpdps(N,M)<<endl;
 	
 }
 
