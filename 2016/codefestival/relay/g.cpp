@@ -16,31 +16,24 @@ int N,Q;
 int A[101010],B[101010];
 int D[101010];
 int yes[101010];
+
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N>>Q;
 	FOR(i,N) D[i]=i;
+	yes[0]=1;
+	yes[1]=1;
+	int cur=0;
 	FOR(i,Q) {
 		cin>>A[i]>>B[i];
 		A[i]--,B[i]--;
-	}
-	for(i=Q-1;i>=0;i--) {
-		swap(D[A[i]],D[B[i]]);
-	}
-	int cur=0;
-	yes[D[0]]=1;
-	if(cur) yes[D[cur-1]]=1;
-	if(cur<N-1) yes[D[cur+1]]=1;
-	FOR(i,Q) {
 		if(A[i]==cur) cur=B[i];
 		else if(B[i]==cur) cur=A[i];
 		swap(D[A[i]],D[B[i]]);
 		if(cur) yes[D[cur-1]]=1;
 		if(cur<N-1) yes[D[cur+1]]=1;
 	}
-	
-	
 	
 	cout<<count(yes,yes+N,1)<<endl;
 }
