@@ -18,6 +18,7 @@ void solve() {
 	int i,j,k,l,r,x,y; string s;
 	cin>>A>>B>>X;
 	if(B==0) cout<<1<<endl;
+	else if(A==0) cout<<(B/X)+1<<endl;
 	else cout<<(B/X)-(A-1)/X<<endl;
 }
 
