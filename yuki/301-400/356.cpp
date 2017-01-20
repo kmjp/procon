@@ -18,13 +18,13 @@ void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	FOR(i,3) cin>>T[i];
-	ll a=T[0]*T[1];
-	ll b=T[1]-T[0];
-	ll g=__gcd(a,b);
+	__int128 a=T[0]*T[1];
+	__int128 b=T[1]-T[0];
+	__int128 g=__gcd(a,b);
 	a/=g;
 	b/=g;
-	ll c=T[0]*T[2];
-	ll d=T[2]-T[0];
+	__int128 c=T[0]*T[2];
+	__int128 d=T[2]-T[0];
 	g=__gcd(c,d);
 	c/=g;
 	d/=g;
@@ -36,7 +36,7 @@ void solve() {
 	g=__gcd(a,b);
 	a/=g;
 	b/=g;
-	_P("%lld/%lld\n",abs(a),abs(b));
+	_P("%lld/%lld\n",abs((ll)a),abs((ll)b));
 	
 	
 }
