@@ -13,14 +13,12 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int H,W,K;
-int rot;
 vector<int> A[101];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>H>>W>>K;
-	if(H<W) rot=1,swap(H,W);
 	
 	FOR(y,H) {
 		FOR(x,W) A[y].push_back(y*W+x+1);
@@ -46,14 +44,7 @@ void solve() {
 		A[y]=R;
 	}
 	
-	if(rot==0) {
-		FOR(y,H) FOR(x,W) _P("%d%c", A[y][x],(x==(W-1))?'\n':' ');
-	}
-	else {
-		FOR(x,W) FOR(y,H) _P("%d%c", A[y][x],(y==(H-1))?'\n':' ');
-	}
-	
-	
+	FOR(y,H) FOR(x,W) _P("%d%c", A[y][x],(x==(W-1))?'\n':' ');
 }
 
 
