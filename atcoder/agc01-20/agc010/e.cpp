@@ -13,47 +13,43 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-ll A[101010];
-vector<int> E[101010];
+int A[2020];
+vector<pair<int,int>> E[2020];
+int vis[2020];
 
-ll dfs(int cur,int pre) {
-	
-	if(E[cur].size()==1) {
-		return A[cur];
+deque<int> dfs(int cur) {
+	deque<int> R;
+	vis[cur]=1;
+	sort(ALL(E[cur]));
+	FORR(r,E[cur]) if(vis[r.second]==0) {
+		deque<int> R2=dfs(r.second), R3;
+		while(R.size() || R2.size()) {
+			if(R2.size() && (R.empty() || R.front()<=R2.front())) {
+				R3.push_back(R2.front());
+				R2.pop_front();
+			}
+			else {
+				R3.push_back(R.front());
+				R.pop_front();
+			}
+		}
+		R=R3;
 	}
-	
-	ll tot=0;
-	FORR(e,E[cur]) if(e!=pre) tot+=dfs(e,cur);
-	
-	ll X=2*A[cur]-tot;
-	if(X<0) {
-		_P("NO\n");
-		exit(0);
-	}
-	return X;
+	R.push_front(A[cur]);
+	return R;
 }
+
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N;
 	FOR(i,N) cin>>A[i];
-	FOR(i,N-1) {
-		cin>>x>>y;
-		E[x-1].push_back(y-1);
-		E[y-1].push_back(x-1);
-	}
+	FOR(x,N) FOR(y,N) if(x!=y && __gcd(A[x],A[y])>1) E[x].push_back({A[y],y});
 	
-	if(N==2) {
-		if(A[0]==A[1]) return _P("YES\n");
-		return _P("NO\n");
-	}
-	int root=-1;
-	FOR(i,N) if(E[i].size()>1) root=i;
-	
-	if(dfs(root,-1)==0) _P("YES\n");
-	else _P("NO\n");
-	
+	FOR(i,N) E[N].push_back({A[i],i});
+	auto ret=dfs(N);
+	FOR(i,N) _P("%d%c",ret[i+1],(i==N-1)?'\n':' ');
 	
 }
 

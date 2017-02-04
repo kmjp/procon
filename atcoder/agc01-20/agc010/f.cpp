@@ -13,24 +13,16 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-ll A[101010];
-vector<int> E[101010];
+int A[3030];
+vector<int> E[3030];
 
-ll dfs(int cur,int pre) {
+int dfs(int cur,int pre) {
 	
-	if(E[cur].size()==1) {
-		return A[cur];
-	}
+	int mi=1<<30;
+	FORR(e,E[cur]) if(e!=pre) mi=min(mi,dfs(e,cur));
 	
-	ll tot=0;
-	FORR(e,E[cur]) if(e!=pre) tot+=dfs(e,cur);
-	
-	ll X=2*A[cur]-tot;
-	if(X<0) {
-		_P("NO\n");
-		exit(0);
-	}
-	return X;
+	if(mi<A[cur]) return 1<<30;
+	return A[cur];
 }
 
 void solve() {
@@ -43,18 +35,9 @@ void solve() {
 		E[x-1].push_back(y-1);
 		E[y-1].push_back(x-1);
 	}
-	
-	if(N==2) {
-		if(A[0]==A[1]) return _P("YES\n");
-		return _P("NO\n");
-	}
-	int root=-1;
-	FOR(i,N) if(E[i].size()>1) root=i;
-	
-	if(dfs(root,-1)==0) _P("YES\n");
-	else _P("NO\n");
-	
-	
+	vector<int> R;
+	FOR(i,N) if(dfs(i,-1)==1<<30) R.push_back(i+1);
+	FOR(i,R.size()) _P("%d%c", R[i],(i==R.size()-1)?'\n':' ');
 }
 
 
