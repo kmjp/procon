@@ -14,12 +14,9 @@ typedef signed long long ll;
 
 int N;
 int X[101010];
+int cnt[101010];
 ll mo=1000000007;
 
-int can[101010];
-int first[101010];
-
-int cnt[101010];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -30,32 +27,22 @@ void solve() {
 	FOR(i,N) {
 		cin>>X[i];
 		
+		cnt[(fail+1)/2]++;
 		if(i==0) {
 			X[0]=1;
 		}
-		else if(i==1) {
+		else{
 			
-			if(X[1]>X[0]+2) X[1]=X[0]+2;
+			if(X[i]>=X[i-1]+2) X[i]=X[i-1]+2;
+			if(X[i-1]+1==X[i]) fail++;
 		}
-		else {
-			if(X[i-2]+1==X[i-1]) {
-				fail++;
-			}
-			if(X[i]>=X[i-1]+2) {
-				X[i]=X[i-1]+2;
-			}
-			first[i]=(fail+1)/2;
-		}
-		//_P("%d:%d\n",X[i],first[i]);
-		cnt[first[i]]++;
 	}
 	
 	ll ret=1;
-	ll tot=cnt[0];
-	for(i=1;i<=N;i++) {
-		//cout<<tot<<endl;
-		ret=ret*tot%mo;
-		tot+=cnt[i];
+	ll tot=0;
+	FOR(i,N) {
+		tot += cnt[i];
+		(ret *= tot)%=mo;
 		tot--;
 	}
 	cout<<ret<<endl;
