@@ -13,49 +13,28 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N,K;
-string S;
-string T;
+deque<char> Q;
+
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N>>K>>S;
+	cin>>N>>K>>s;
+	FORR(c,s) Q.push_back(c);
 	
-	int pos=0,rev=0,revn=0;
-	while(pos<N && K-->0){
-		
-		if((S[pos]=='A') ^ rev ^ revn) {
-			revn^=1;
+	bool rev=false;
+	FOR(i,min(K,2*N+(K%2))) {
+		if((Q[0]=='A')^rev) {
+			Q[0]='A'+'B'-Q[0];
 		}
 		else {
-			pos++;
-			revn = 0;
-			rev ^=1;
+			Q.pop_front();
+			rev ^= 1;
+			Q.push_back('A'+rev);
 		}
 	}
 	
-	string R;
-	if(pos==N) {
-		while(R.size()<N) {
-			if((N-R.size())%2==1) R+='A';
-			else R+='B';
-		}
-		if(R[0]=='A' && K%2) R[0]='B';
-	}
-	else {
-		int first=1;
-		while(pos<N) {
-			if(rev ^ ((first==1)&&revn)) R+='A'+'B'-S[pos];
-			else R+=S[pos];
-			pos++;
-			first=0;
-		}
-		while(R.size()<N) {
-			if((N-R.size())%2==1) R+='A';
-			else R+='B';
-		}
-	}
-	cout<<R<<endl;
-	
+	FORR(r,Q) _P("%c",rev?('A'+'B'-r):r);
+	_P("\n");
 	
 }
 
