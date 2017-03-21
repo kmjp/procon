@@ -36,7 +36,7 @@ void solve() {
 	vector<int> path;
 	y = B;
 	FOR(i,N) {
-		if(path.empty() || ask(i,path.back())) {
+		if(path.empty() || ask(path.back(),i)) {
 			path.push_back(i);
 		}
 		else {
@@ -46,15 +46,11 @@ void solve() {
 		if(path.size()>y) break;
 	}
 	
-	x = path.front();
+	x = path.back();
 	FOR(i,N) ret[i]=ask(x,i);
 	cout<<"!";
 	FOR(i,N) cout<<ret[i];
 	cout<<endl;
-	
-	
-	
-	
 	
 }
 
