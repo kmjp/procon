@@ -14,30 +14,14 @@ typedef signed long long ll;
 
 class ConsecutiveOnes {
 	public:
-	
-	
 	long long get(long long n, int k) {
-		ll mi=(1LL<<60)-1;
-		
+		ll ret=1LL<<60;
 		for(int i=0;i+k<=55;i++) {
-			ll al=((1LL<<k)-1)<<i;
-			if(n<al) {
-				mi=min(mi,al);
-			}
-			else {
-				ll v=n-al;
-				if(v & al) {
-					v &= ~((1LL<<(i+k))-1);
-					v += (1LL<<(i+k));
-					assert((v&al)==0);
-				}
-				mi=min(mi,v+al);
-			}
+			ll mask=((1LL<<k)-1)<<i;
+			if((n & mask)==mask) return n;
+			ret = min(ret, (n>>(i+k)<<(i+k))|mask);
 		}
-		return mi;
-		
-		
-		
+		return ret;
 	}
 	
 // BEGIN CUT HERE
