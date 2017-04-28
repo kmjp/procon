@@ -29,17 +29,11 @@ void solve() {
 	K+=2;
 	sort(P,P+K);
 	
-	VX.push_back(0);
-	VX.push_back(1<<30);
-	FOR(i,K) VX.push_back(P[i].second);
-	sort(ALL(VX));
-	VX.erase(unique(ALL(VX)),VX.end());
-	
-	vector<int> A(K+2,1<<20);
+	vector<int> A(K+2,1<<30);
 	vector<int> lowest(K+2,0);
 	int ma=-1;
 	FOR(i,K) {
-		X[i]=lower_bound(ALL(VX),P[i].second)-VX.begin();
+		X[i]=P[i].second;
 		ID[i]=lower_bound(ALL(A),X[i]+1)-A.begin();
 		A[ID[i]]=X[i];
 		ma=max(ma,A[ID[i]]);
@@ -53,8 +47,6 @@ void solve() {
 	}
 	
 	cout<<count(ok,ok+K+2,1)-2<<endl;
-	
-	
 	
 }
 
