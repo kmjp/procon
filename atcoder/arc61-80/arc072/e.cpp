@@ -32,21 +32,16 @@ void solve() {
 	cin>>Q;
 	FOR(i,Q) cin>>QQ[i];
 	
-	if(L[N]>0) {
-		FOR(i,Q) cout<<"YES"<<endl;
+	NG[N]=1;
+	for(i=N-1;i>=0;i--) {
+		if(NG[i+1]<=X[i]/2) NG[i]=NG[i+1];
+		else NG[i]=NG[i+1]+X[i];
 	}
-	else {
-		NG[N]=1;
-		for(i=N-1;i>=0;i--) {
-			if(NG[i+1]<=X[i]/2) NG[i]=NG[i+1];
-			else NG[i]=NG[i+1]+X[i];
-		}
-		
-		FOR(i,Q) {
-			x = QQ[i];
-			if(L[x-1]==0 || NG[x]>L[x-1]) cout<<"NO"<<endl;
-			else cout<<"YES"<<endl;
-		}
+	
+	FOR(i,Q) {
+		x = QQ[i];
+		if(L[x-1]==0 || NG[x]>L[x-1]) cout<<"NO"<<endl;
+		else cout<<"YES"<<endl;
 	}
 	
 }
