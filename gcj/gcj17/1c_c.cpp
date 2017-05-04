@@ -16,14 +16,10 @@ typedef signed long long ll;
 int N,K;
 double U;
 double P[101],Q[101];
-double L[101][101],R[101][101],dp[101][101];
-double A[101],B[101];
-
-
+double L[101][101];
 
 void solve(int _loop) {
 	int f,i,j,k,l,x,y;
-	
 	
 	cin>>N>>K>>U;
 	FOR(i,N) cin>>P[i];
