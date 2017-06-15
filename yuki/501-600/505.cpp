@@ -32,7 +32,9 @@ void solve() {
 			T.insert(r*x);
 			if(x!=0) T.insert(r/x);
 		}
-		swap(S,T);
+		S.clear();
+		S.insert(*T.begin());
+		S.insert(*T.rbegin());
 	}
 	cout<<*S.rbegin()<<endl;
 }
