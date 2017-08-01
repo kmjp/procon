@@ -33,7 +33,7 @@ void solve() {
 		C=-C/X;
 	}
 	
-	double D=max(0.0,(double)B*B-4*C);
+	long double D=max((long double)0.0,(long double)B*B-4*C);
 	for(Y=(-B+sqrt(D))/2-2;Y<=(-B+sqrt(D))/2+2;Y++) {
 		
 		Z=-B-Y;
