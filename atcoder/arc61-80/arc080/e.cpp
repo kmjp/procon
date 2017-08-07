@@ -36,36 +36,31 @@ public:
 };
 
 SegTree_1<int,1<<20> ev,od;
+set<vector<int>> cand;
 
-int T;
-pair<int,int> P[202020];
-vector<int> E[202020];
-map<pair<int,int>,int> to;
-
-int dfs(int L,int R) {
-	if(R<=L) return -1;
+void add(int L,int R) {
+	vector<int> ret;
+	if(R<=L) return;
 	
 	int tar;
 	if(L%2==0) tar=ev.getval(L,R);
 	else tar=od.getval(L,R);
 	int x=rev[tar];
+	ret.push_back(tar);
 	
 	if((x+1)%2==0) tar=ev.getval(x+1,R);
 	else tar=od.getval(x+1,R);
 	int y=rev[tar];
+	ret.push_back(tar);
 	
-	int cur=T++;
-	P[cur]={A[x],A[y]};
-	to[P[cur]]=cur;
-	
-	int ch;
-	ch=dfs(L,x);
-	if(ch>=0) E[cur].push_back(ch);
-	ch=dfs(x+1,y);
-	if(ch>=0) E[cur].push_back(ch);
-	ch=dfs(y+1,R);
-	if(ch>=0) E[cur].push_back(ch);
-	return cur;
+	ret.push_back(L);
+	ret.push_back(x);
+	ret.push_back(y);
+	ret.push_back(R);
+	cand.insert(ret);
+}
+
+void dodo(vector<int> V) {
 }
 
 void solve() {
@@ -86,23 +81,19 @@ void solve() {
 		rev[A[i]]=i;
 	}
 	
-	dfs(0,N);
-	
-	set<pair<int,int>> cand;
 	vector<int> Q;
-	cand.insert(P[0]);
+	
+	add(0,N);
 	while(cand.size()) {
-		pair<int,int> p=*cand.begin();
+		vector<int> v=*cand.begin();
 		cand.erase(cand.begin());
-		Q.push_back(p.first);
-		Q.push_back(p.second);
-		
-		x = to[p];
-		FORR(e,E[x]) cand.insert(P[e]);
+		Q.push_back(v[0]);
+		Q.push_back(v[1]);
+		add(v[2],v[3]);
+		add(v[3]+1,v[4]);
+		add(v[4]+1,v[5]);
 	}
 	
-	assert(T==N/2);
-	assert(Q.size()==N);
 	
 	FOR(i,N) _P("%d%c",Q[i],(i==N-1)?'\n':' ');
 	
