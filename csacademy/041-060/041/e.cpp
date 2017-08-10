@@ -49,15 +49,11 @@ void solve() {
 		x = bt.total(y);
 		if(x<=0) break;
 		
-		bt.add(y,-1);
-		if(y && bt.total(y)<bt.total(y-1)) {
-			bt.add(y,1);
-			x=bt.lower_bound(bt.total(y));
-			k=bt.lower_bound(bt.total(y)+1);
-			bt.add(k,-1);
-			bt.add(x,-1);
-			bt.add(x+(k-y),1);
-		}
+		x=bt.lower_bound(bt.total(y));
+		k=bt.lower_bound(bt.total(y)+1);
+		bt.add(k,-1);
+		bt.add(x,-1);
+		bt.add(x+(k-y),1);
 	}
 	
 	cout<<i<<endl;
