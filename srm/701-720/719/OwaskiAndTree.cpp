@@ -14,57 +14,18 @@ typedef signed long long ll;
 
 class OwaskiAndTree {
 	public:
-	int N;
-	vector<int> E[1010];
-	int S[1010];
-	
-	int dfs(int cur,int pre) {
-		int tot=S[cur];
-		FORR(e,E[cur]) if(e!=pre) tot+=dfs(e,cur);
-		return max(0,tot);
-	}
-	pair<int,int> dfs2(int cur,int pre) {
-		int take=S[cur];
-		int nottake=0;
-		FORR(e,E[cur]) if(e!=pre) {
-			pair<int,int> p=dfs2(e,cur);
-			take+=max(0,p.first);
-			nottake+=max({0,p.first,p.second});
-		}
-		
-		return make_pair(take,nottake);
-	}
-	
 	int maximalScore(vector <int> parent, vector <int> pleasure) {
-		N=pleasure.size();
-		int i,j,x;
-		FOR(i,N) E[i].clear();
-		FOR(i,N-1) {
-			E[i+1].push_back(parent[i]);
-			E[parent[i]].push_back(i+1);
+		int N=pleasure.size();
+		pair<int,int> P[1010]={};
+		
+		for(int i=N-1;i>=1;i--) {
+			P[i].second += pleasure[i];
+			int p=parent[i-1];
+			P[p].first+=max({P[i].first,P[i].second,0});
+			P[p].second+=max({P[i].second,0});
 		}
 		
-		int ma=0;
-		FOR(i,N) {
-			FOR(j,N) S[j]=pleasure[j];
-			
-			x=i;
-			while(x) x=parent[x-1], S[x]=0;
-			
-			int tot=max(0,pleasure[i]);
-			FORR(e,E[i]) {
-				if(e>i) {
-					tot+=dfs(e,i);
-				}
-				if(e<i) {
-					auto a=dfs2(e,i);
-					tot+=max(a.first,a.second);
-				}
-			}
-			ma=max(ma,tot);
-		}
-		return ma;
-		
+		return max({P[0].first, P[0].second+pleasure[0], 0});
 	}
 	
 // BEGIN CUT HERE
