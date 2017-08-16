@@ -12,7 +12,7 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 ll N,M;
-ll C[10001][10001];
+int C[10001][10001];
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	cin>>N>>M;

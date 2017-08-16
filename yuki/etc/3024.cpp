@@ -13,43 +13,37 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-vector<int> V;
-
-set<double> hoge(int L,int R) {
-	set<double> S;
-	if(L==R) {
-		S.insert(V[L]);
-	}
-	else {
-		for(int M=L;M<R;M++) {
-			set<double> a=hoge(L,M);
-			set<double> b=hoge(M+1,R);
-			FORR(r,a) FORR(r2,b) {
-				S.insert(r+r2);
-				S.insert(r-r2);
-				S.insert(r*r2);
-				if(abs(r2)>1e-9) S.insert(r/r2);
-			}
-		}
-		
-	}
-	return S;
-}
+int A[101];
+set<double> S[128];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N;
-	FOR(i,N) cin>>x, V.push_back(x);
-	sort(ALL(V));
-	do {
-		for(x=1;x<=N;x++) for(y=1;x+y<=N;y++) {
-			set<double> S=hoge(0,x-1);
-			set<double> T=hoge(x,x+y-1);
-			FORR(r,S) FORR(r2,T) if(abs(r-r2)<1e-6) return _P("YES\n");
+	FOR(i,N) cin>>A[i];
+	
+	for(int mask=1;mask<1<<N;mask++) {
+		if(__builtin_popcount(mask)==1) {
+			FOR(i,N) if(mask&(1<<i)) S[mask].insert(A[i]);
 		}
-		
-	} while(next_permutation(ALL(V)));
+		else {
+			for(int submask=mask; submask>0; submask=(submask-1)&mask) {
+				int ot=mask^submask;
+				if(ot>submask) continue;
+				FORR(a,S[submask]) FORR(b,S[ot]) {
+					if(abs(a-b)<1e-9) return _P("YES\n");
+					if(mask!=(1<<N)-1) {
+						S[mask].insert(a+b);
+						S[mask].insert(a*b);
+						S[mask].insert(abs(a-b));
+						if(abs(b)>=1e-9) S[mask].insert(a/b);
+						if(abs(a)>=1e-9) S[mask].insert(b/a);
+					}
+				}
+			}
+		}
+	}
+	
 	
 	return _P("NO\n");
 }
