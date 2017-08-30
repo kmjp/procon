@@ -15,8 +15,8 @@ typedef signed long long ll;
 int M;
 int P[21][300005],D[300005];
 
-set<int> L;
-int X,Y,dia;
+int X[303030],Y[303030],dia[303030];
+int ret[303030];
 
 int dist(int a,int b) {
 	int ret=0,i,aa=a,bb=b;
@@ -35,37 +35,38 @@ void solve() {
 		P[0][i+1]--;
 		D[i+1]=D[P[0][i+1]]+1;
 	}
-	M++;
-	FOR(i,19) FOR(x,M) P[i+1][x]=P[i][P[i][x]];
+	FOR(i,19) FOR(x,M+1) P[i+1][x]=P[i][P[i][x]];
 	
-	cout<<2<<endl;
-	X=0,Y=1;
-	dia=1;
-	L.insert(0);
-	L.insert(1);
+	X[1]=0;
+	Y[1]=dia[1]=1;
+	for(i=2;i<=M;i++) {
+		X[i]=X[i-1];
+		Y[i]=Y[i-1];
+		dia[i]=dia[i-1];
+		
+		if(dist(X[i],i)>dia[i-1]) {
+			dia[i]++;
+			Y[i]=i;
+		}
+		else if(dist(Y[i],i)>dia[i-1]) {
+			dia[i]++;
+			X[i]=i;
+		}
+	}
 	
-	int ret=2;
-	for(i=2;i<M;i++) {
-		L.erase(P[0][i]);
-		
-		int dx=dist(X,i);
-		int dy=dist(Y,i);
-		
-		if(dx<=dia && dy<=dia) {
-			if(dx==dia || dy==dia) L.insert(i);
+	FOR(i,M+1) {
+		ret[i]++;
+		x=i-1;
+		for(j=20;j>=0;j--) {
+			int tmp=x+(1<<j);
+			if(tmp>M) continue;
+			if(max(dist(X[tmp],i),dist(Y[tmp],i))==dia[tmp]) x=tmp;
 		}
-		else {
-			if(dy>dia) swap(X,Y), swap(dx,dy);
-			dia=dx;
-			Y=i;
-			set<int> L2=L;
-			L.clear();
-			FORR(r,L2) if(dist(r,Y)==dia) L.insert(r);
-			L.insert(X);
-			L.insert(Y);
-		}
-		
-		cout<<L.size()<<endl;
+		ret[x+1]--;
+	}
+	for(i=1;i<=M;i++) {
+		ret[i]+=ret[i-1];
+		_P("%d\n",ret[i]);
 	}
 	
 }
