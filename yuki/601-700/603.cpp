@@ -31,16 +31,35 @@ struct comp {
 	}
 };
 
-ll comb(ll a,ll b) {
+pair<ll,ll> comb(ll a,ll b) {
 	ll p=1;
 	ll q=1;
+	int dif=0;
 	while(b) {
-		(p*=a%mo)%=mo;
-		(q*=b%mo)%=mo;
+		if(a%mo==0) {
+			dif++;
+			if(a/mo%mo==0) {
+				dif++;
+				(p*=a/mo/mo)%=mo;
+			}
+			else {
+				(p*=a/mo)%=mo;
+			}
+		}
+		else {
+			(p*=a%mo)%=mo;
+		}
+		if(b%mo==0) {
+			dif--;
+			(q*=b/mo)%=mo;
+		}
+		else {
+			(q*=b%mo)%=mo;
+		}
 		a--;
 		b--;
 	}
-	return p*modpow(q)%mo;
+	return {p*modpow(q)%mo,dif};
 }
 
 ll hoge(ll s,vector<int> p) {
@@ -54,15 +73,17 @@ ll hoge(ll s,vector<int> p) {
 	FORR(r,p) sum+=r;
 	ll pre=s/sum;
 	s%=sum;
+	int dif=0;
 	FORR(r,p) {
-		(a *= comb(r*pre,r))%=mo;
+		auto c=comb(r*pre,r);
+		(a*=c.first)%=mo;
+		dif+=c.second;
 		Q.push(make_pair(r*pre+1,r*(pre-1)+1));
 	}
-	int dif=0;
-	
 	while(s--) {
 		auto r=Q.top();
 		Q.pop();
+		
 		
 		ll x=r.first;
 		while(x%mo==0) {
