@@ -42,14 +42,14 @@ int ok() {
 	if(X[0]==X[1] && hoge(1e-5)) return 1;
 	if(Y[0]!=Y[1]) {
 		T=1.0*(X[1]-X[0])/(Y[0]-Y[1]);
-		if(hoge(T+(1e-5))) return 1;
-		if(hoge(T-(1e-5))) return 1;
+		if(hoge(T+(1e-5))||hoge(T+(1e-6))) return 1;
+		if(hoge(T-(1e-5))||hoge(T-(1e-6))) return 1;
 	}
 	if(X[2]==X[1] && hoge(1e-4)) return 1;
 	if(Y[2]!=Y[1]) {
 		T=1.0*(X[1]-X[2])/(Y[2]-Y[1]);
-		if(hoge(T+(1e-5))) return 1;
-		if(hoge(T-(1e-5))) return 1;
+		if(hoge(T+(1e-5))||hoge(T+(1e-6))) return 1;
+		if(hoge(T-(1e-5))||hoge(T-(1e-6))) return 1;
 	}
 	return 0;
 }
