@@ -30,13 +30,7 @@ class IncreasingSequences {
 		
 		int N=L.size();
 		int i,x,y;
-		FOR(i,N) {
-			L[i]+=N-i;
-			R[i]+=N-i;
-			if(i) L[i]=max(L[i],L[i-1]);
-		}
-		for(i=N-2;i>=0;i--) R[i]=min(R[i],R[i+1]);
-		FOR(i,N) if(L[i]>R[i]) return 0;
+		FOR(i,N) L[i]+=N-i, R[i]+=N-i;
 		
 		vector<int> C;
 		C.push_back(0);
