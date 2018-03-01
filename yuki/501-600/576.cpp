@@ -47,7 +47,7 @@ void solve() {
 	}
 	
 	double L=0,R=1;
-	FOR(i,60) {
+	FOR(i,40) {
 		double M=(L+R)/2;
 		if(ok(M)) L=M;
 		else R=M;

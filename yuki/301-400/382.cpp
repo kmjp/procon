@@ -45,7 +45,7 @@ void solve() {
 	y=0;
 	while(1) {
 		gettimeofday(&tv2,NULL);
-		if((tv2.tv_sec-tv1.tv_sec)*1000000+(tv2.tv_usec-tv1.tv_usec)>4000000) break;
+		if((tv2.tv_sec-tv1.tv_sec)*1000000+(tv2.tv_usec-tv1.tv_usec)>7000000) break;
 		seed = tv2.tv_usec;
 		FOR(i,5000) {
 			y++;

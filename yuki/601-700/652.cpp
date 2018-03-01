@@ -14,19 +14,21 @@ typedef signed long long ll;
 
 int A,B;
 int D,E;
+char C;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	scanf("%d%d",&A,&B);
 	E=0;
-	i=scanf(" UTC%d.%d",&D,&E);
+	i=scanf(" UTC%c%d.%d",&C,&D,&E);
 	A-=9;
-	A+=D;
-	if(D>=0) {
+	if(C=='+') {
+		A+=D;
 		if(E) B+=6*E;
 	}
 	else {
+		A-=D;
 		if(E) B-=6*E;
 	}
 	if(B>=60) B-=60,A++;
