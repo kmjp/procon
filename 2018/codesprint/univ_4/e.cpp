@@ -12,47 +12,6 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-template<class V,int NV> class SegTree_1 {
-public:
-	vector<vector<V>> val;
-	static V const def=0;
-	V comp(V l,V r){ return max(l,r);};
-	
-	SegTree_1(){val.resize(NV*2);};
-	V getval(int x,int y,int v,int l=0,int r=NV,int k=1) { // x<=i<y
-		if(r<=x || y<=l) return 0;
-		if(x<=l && r<=y) {
-			return lower_bound(ALL(val[k]),v+1)-val[k].begin();
-		}
-		return getval(x,y,v,l,(l+r)/2,k*2)+getval(x,y,v,(l+r)/2,r,k*2+1);
-	}
-	void set(int entry,V v) {
-		val[entry+NV].clear();
-		val[entry+NV].push_back(v);
-	}
-	void build() {
-		for(int i=NV-1;i>=1;i--) {
-			val[i].clear();
-			int a=0,b=0;
-			int x=i*2,y=i*2+1;
-			while(a<val[x].size() || b<val[y].size()) {
-				if(a==val[x].size()) {
-					val[i].push_back(val[y][b++]);
-				}
-				else if(b==val[y].size()) {
-					val[i].push_back(val[x][a++]);
-				}
-				else if(val[x][a]<val[y][b]) {
-					val[i].push_back(val[x][a++]);
-				}
-				else {
-					val[i].push_back(val[y][b++]);
-				}
-			}
-		}
-	}
-};
-SegTree_1<int,1<<20> st;
 
 int N;
 int nex[1010101];
@@ -77,9 +36,6 @@ void solve() {
 		nex[i]=N+1;
 		p[x]=i;
 	}
-	
-	for(i=1;i<=N;i++) st.set(i,nex[i]);
-	st.build();
 	
 	cin>>Q;
 	FOR(i,Q) {
