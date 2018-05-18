@@ -12,50 +12,39 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N;
-string S;
-int A[101010],B[101010],C[101010];
-ll ret;
-vector<pair<ll,ll>> V;
-
-bool cmp(pair<ll,ll> L,pair<ll,ll> R) {
-	return minmax(-L.first,-L.first+L.second-R.first) > minmax(-R.first,-R.first+R.second-L.first);
-}
-
+int K;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N>>S;
-	FOR(i,N) {
-		A[i+1]=A[i];
-		B[i+1]=B[i];
-		C[i+1]=C[i];
-		if(S[i]=='(') {
-			B[i+1]++;
-		}
-		else {
-			if(B[i+1]) {
-				B[i+1]--;
-				C[i+1]++;
+	cin>>K;
+	for(int a3=0;a3<=200;a3++) {
+		for(int a4=0;a4<=200;a4++) {
+			if(a3+a4>250) continue;
+			int left=K-a3*a4;
+			if(left<0 || left>200) continue;
+			if(left==0) {
+				if(a3+a4<=250) {
+					cout<<a3+a4<<endl;
+					FOR(i,a3) cout<<3<<" ";
+					FOR(i,a4) cout<<4<<" ";
+					return;
+				}
+				continue;
 			}
-			else {
-				A[i+1]++;
+			for(int a5=1;a5<=250-a3-a4;a5++) if(left%a5==0) {
+				int a6=left/a5;
+				if(a3+a4+a5+a6<=250) {
+					cout<<a3+a4+a5+a6<<endl;
+					FOR(i,a3) cout<<3<<" ";
+					FOR(i,a4) cout<<4<<" ";
+					FOR(i,a5) cout<<5<<" ";
+					FOR(i,a6) cout<<6<<" ";
+					return;
+				}
 			}
 		}
-		ret+=C[i+1];
-		V.push_back({A[i+1],B[i+1]});
 	}
-	
-	sort(ALL(V),cmp);
-	ll cur=0;
-	FORR(v,V) {
-		ret+=min(cur,v.first);
-		cur-=min(cur,v.first);
-		cur+=v.second;
-	}
-	cout<<ret*2<<endl;
-	
 }
 
 

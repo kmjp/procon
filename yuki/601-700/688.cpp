@@ -12,49 +12,30 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N;
-string S;
-int A[101010],B[101010],C[101010];
-ll ret;
-vector<pair<ll,ll>> V;
-
-bool cmp(pair<ll,ll> L,pair<ll,ll> R) {
-	return minmax(-L.first,-L.first+L.second-R.first) > minmax(-R.first,-R.first+R.second-L.first);
-}
-
+ll N;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N>>S;
-	FOR(i,N) {
-		A[i+1]=A[i];
-		B[i+1]=B[i];
-		C[i+1]=C[i];
-		if(S[i]=='(') {
-			B[i+1]++;
-		}
-		else {
-			if(B[i+1]) {
-				B[i+1]--;
-				C[i+1]++;
-			}
-			else {
-				A[i+1]++;
-			}
-		}
-		ret+=C[i+1];
-		V.push_back({A[i+1],B[i+1]});
+	cin>>N;
+	if(N==0) {
+		cout<<1<<endl;
+		cout<<1<<endl;
+		return;
 	}
-	
-	sort(ALL(V),cmp);
-	ll cur=0;
-	FORR(v,V) {
-		ret+=min(cur,v.first);
-		cur-=min(cur,v.first);
-		cur+=v.second;
+	for(i=2;i<=30;i++) {
+		ll x=i*(i-1)/2;
+		if(N%x) continue;
+		FOR(j,31) if((x<<j)==N) {
+			cout<<j+i<<endl;
+			FOR(k,j) cout<<0<<" ";
+			FOR(k,i) cout<<1<<" ";
+			return;
+		}
+		
+		
+		
 	}
-	cout<<ret*2<<endl;
 	
 }
 
