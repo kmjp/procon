@@ -46,17 +46,6 @@ void solve() {
 	if(V==10000000000LL) return _P("100^5\n");
 	ret=no_plus(V);
 	
-	for(x=2;x<=9;x++) {
-		ll v=1;
-		for(y=1;y<=9;y++) {
-			v*=x;
-			if(y>2) po[v]=to_string(x)+"^"+to_string(y);
-		}
-	}
-	for(i=0;i<1000;i++) po[i]=to_string(i);
-	
-	
-	
 	// 4*4
 	for(x=2;x<=99;x++) {
 		ll v=1;
@@ -68,6 +57,8 @@ void solve() {
 			if(po.count(v)==0 || po[v].size()>tmp.size()) po[v]=tmp;
 		}
 	}
+	for(i=0;i<1000;i++) po[i]=to_string(i);
+	
 	// one plus
 	FORR(p,po) {
 		ll v=V-p.first;
