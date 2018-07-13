@@ -13,29 +13,19 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-int A[202020];
-int V[202020];
 
+bool isprime(ll v) {
+	for(ll i=2;i*i<=v;i++) if(v%i==0) return false;
+	return (v!=1);
+}
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	
 	cin>>N;
-	for(i=0;i<=N+1;i++) V[i]=1<<30;
-	int ma=0;
-	for(i=1;i<=N;i++) {
-		cin>>x;
-		x-=i;
-		if(x<0) continue;
-		y=lower_bound(V,V+N+1,x+1)-V;
-		V[y]=x;
-		ma=max(ma,y);
-	}
-	
-	cout<<N-(ma+1)<<endl;
-	
-	
+	int ret=0;
+	for(i=1;i<=N;i++) if(isprime(i)) ret+=i;
+	cout<<ret<<endl;
 	
 }
 

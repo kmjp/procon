@@ -13,30 +13,38 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-int A[202020];
-int V[202020];
-
+multiset<string> M[202];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	
 	cin>>N;
-	for(i=0;i<=N+1;i++) V[i]=1<<30;
-	int ma=0;
-	for(i=1;i<=N;i++) {
+	while(N--) {
 		cin>>x;
-		x-=i;
-		if(x<0) continue;
-		y=lower_bound(V,V+N+1,x+1)-V;
-		V[y]=x;
-		ma=max(ma,y);
+		if(x==0) {
+			cin>>i>>j;
+			while(j--) {
+				cin>>s;
+				M[i].insert(s);
+			}
+		}
+		else if(x==1) {
+			cin>>s;
+			FOR(i,21) {
+				if(M[i].count(s)) {
+					M[i].erase(M[i].find(s));
+					break;
+				}
+			}
+			if(i>20) i=-1;
+			cout<<i<<endl;
+		}
+		else if(x==2) {
+			cin>>i;
+			M[i].clear();
+		}
+		
 	}
-	
-	cout<<N-(ma+1)<<endl;
-	
-	
-	
 }
 
 

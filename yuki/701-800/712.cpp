@@ -12,31 +12,18 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N;
-int A[202020];
-int V[202020];
-
+int H,W;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	
-	cin>>N;
-	for(i=0;i<=N+1;i++) V[i]=1<<30;
-	int ma=0;
-	for(i=1;i<=N;i++) {
-		cin>>x;
-		x-=i;
-		if(x<0) continue;
-		y=lower_bound(V,V+N+1,x+1)-V;
-		V[y]=x;
-		ma=max(ma,y);
+	cin>>H>>W;
+	int B=0;
+	FOR(y,H) {
+		cin>>s;
+		FORR(c,s) if(c!='R') B++;
 	}
-	
-	cout<<N-(ma+1)<<endl;
-	
-	
-	
+	cout<<B<<endl;
 }
 
 
