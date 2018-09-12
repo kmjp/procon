@@ -35,34 +35,19 @@ void solve() {
 		}
 	}
 	
-	ll ret=(1LL<<(N-M));
-	for(int same=0;same<M;same++) {
-		for(int state=0;state<=M;state++) {
-			ZERO(dp);
-			dp[0][state][0]=1;
-			FOR(i,N) {
-				int mask=3;
-				if(i+same+1==N) {
-					mask=1<<((S[i-(N-M)]^1)-'0');
-				}
-				if(i+same>=N) {
-					mask=1<<(S[i-(N-M)]-'0');
-				}
-				
-				
-				FOR(x,M+1) {
-					if(mask&1) {
-						dp[i+1][nex[x][0]][nex[x][0]==M] += dp[i][x][0];
-						dp[i+1][nex[x][0]][1] += dp[i][x][1];
-					}
-					if(mask&2) {
-						dp[i+1][nex[x][1]][nex[x][1]==M] += dp[i][x][0];
-						dp[i+1][nex[x][1]][1] += dp[i][x][1];
-					}
-				}
+	ll ret=0;
+	for(int state=0;state<=M;state++) {
+		ZERO(dp);
+		dp[0][state][state==M]=1;
+		FOR(i,N) {
+			FOR(x,M+1) {
+				dp[i+1][nex[x][0]][nex[x][0]==M] += dp[i][x][0];
+				dp[i+1][nex[x][0]][1] += dp[i][x][1];
+				dp[i+1][nex[x][1]][nex[x][1]==M] += dp[i][x][0];
+				dp[i+1][nex[x][1]][1] += dp[i][x][1];
 			}
-			ret+=dp[N][state][1];
 		}
+		ret+=dp[N][state][1];
 	}
 	cout<<ret<<endl;
 	
