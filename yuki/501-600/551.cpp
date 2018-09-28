@@ -16,11 +16,6 @@ ll mo,P,R;
 int Q;
 ll A,B,C;
 
-ll modpow(ll a, ll n = mo-2) {
-	ll r=1;
-	while(n) r=r*((n%2)?a:1)%mo,a=a*a%mo,n>>=1;
-	return r;
-}
 
 inline int mulmod(int a,int b,int mo) {
 	int d,r;
@@ -32,6 +27,17 @@ inline int mulmod(int a,int b,int mo) {
 		: "r" (mo), "a" (a), "d" (b));
 	return r;
 }
+
+ll modpow(ll a, ll n = mo-2) {
+	ll r=1;
+	a%=mo;
+	while(n) {
+		if(n&1) r=mulmod(r,a,mo);
+		a=mulmod(a,a,mo),n>>=1;
+	}
+	return r;
+}
+
 ll mod_log(ll a,ll b,ll mo) { // a^x=b
 	static ll pre_a=-1;
 	static unordered_map<ll,int> M;
@@ -43,11 +49,11 @@ ll mod_log(ll a,ll b,ll mo) { // a^x=b
 	if(M.empty()) {
 		pre_a=a;
 		ll ap=1,ar=modpow(a),as=1;
-		for(i=0;i*i<mo/8+4;i++) ap=ap*ar%mo;
+		for(i=0;i*i<mo/8+4;i++) ap=mulmod(ap,ar,mo);
 		sq=i;
 		for(i=0;i<mo;i+=sq) {
 			if(M.count(as)==0) M[as]=i;
-			as=as*ap%mo;
+			as=mulmod(as,ap,mo);
 		}
 	}
 	
