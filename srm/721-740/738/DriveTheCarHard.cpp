@@ -45,7 +45,7 @@ class DriveTheCarHard {
 		FOR(i,distance+1) ret=min(ret,from[i]+i*i);
 		return ret;
 	}
-	
+		
 // BEGIN CUT HERE
 	public:
 	void run_test(int Case) { if ((Case == -1) || (Case == 0)) test_case_0(); if ((Case == -1) || (Case == 1)) test_case_1(); if ((Case == -1) || (Case == 2)) test_case_2(); if ((Case == -1) || (Case == 3)) test_case_3(); }
