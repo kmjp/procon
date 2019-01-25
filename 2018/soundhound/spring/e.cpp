@@ -12,148 +12,84 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N,Q;
-string S;
-
 template<class V, int ME> class BIT {
 public:
 	V bit[1<<ME];
 	V operator()(int e) {if(e<0) return 0;V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
 	void add(int e,V v) { e++; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
 };
-BIT<int,20> A,B,A2,B2;
-set<int> AA,AB,DA,DB;
+BIT<ll,20> btL,btR,btLS,btRS;
+
+int N,Q;
+string S;
+
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N>>Q>>S;
 	FOR(i,N) {
-		if(S[i]=='(') {
-			A.add(i,1);
-			AA.insert(i);
-		}
-		else {
-			B.add(i,1);
-			AB.insert(i);
-		}
+		if(S[i]=='(') btL.add(i,1),btLS.add(i,i);
+		if(S[i]==')') btR.add(i,1),btRS.add(i,i);
 	}
-	FOR(i,N) {
-		if(S[i]==')' && AA.size()<AB.size()) {
-			B.add(i,-1);
-			AB.erase(i);
-			DB.insert(i);
-		}
-	}
-	for(i=N-1;i>=0;i--) {
-		if(S[i]=='(' && AA.size()>AB.size()) {
-			A.add(i,-1);
-			AA.erase(i);
-			DA.insert(i);
-		}
-	}
-	ll AS=0,BS=0;
-	int cnt=0;
-	FOR(i,N) if(AA.count(i)||AB.count(i)) {
-		cnt++;
-		if(S[i]=='(') AS+=cnt;
-		else BS+=cnt;
-	}
-	cout<<BS<<" "<<AS<<endl;
-	
 	while(Q--) {
 		cin>>x;
 		x--;
-		if(DA.count(x) || DB.count(x)) {
-			AS+=A(N)-A(x);
-			BS+=B(N)-B(x);
-			if(S[x]=='(') {
-				A.add(x,1);
-				AS+=A(x)+B(x);
-				DA.erase(x);
-				AA.insert(x);
-			}
-			else {
-				B.add(x,1);
-				BS+=A(x)+B(x);
-				DB.erase(x);
-				AB.insert(x);
-			}
-		}
 		if(S[x]=='(') {
+			btL.add(x,-1),btLS.add(x,-x);
+			btR.add(x,1),btRS.add(x,x);
 			S[x]=')';
-			AS-=A(x)+B(x);
-			BS+=A(x)+B(x);
-			A.add(x,-1);
-			B.add(x,1);
-			AA.erase(x);
-			AB.insert(x);
 		}
 		else {
+			btL.add(x,1),btLS.add(x,x);
+			btR.add(x,-1),btRS.add(x,-x);
 			S[x]='(';
+		}
+		
+		k=0;
+		for(i=20;i>=0;i--) {
+			int tk=k+(1<<i);
+			if(btL(N)<tk) continue;
+			if(btR(N)<tk) continue;
 			
-			AS+=A(x)+B(x);
-			BS-=A(x)+B(x);
-			B.add(x,-1);
-			A.add(x,1);
-			AA.insert(x);
-			AB.erase(x);
-		}
-		
-		while(AA.size()>AB.size()) {
-			if(DB.size()) {
-				x=*DB.rbegin();
-				DB.erase(x);
-				AB.insert(x);
-				AS+=A(N)-A(x);
-				BS+=B(N)-B(x);
-				B.add(x,1);
-				BS+=A(x)+B(x);
+			int L=N,R=0;
+			for(j=20;j>=0;j--) {
+				if(btL(L-(1<<j))>=tk) L-=1<<j;
+				if(btR(N)-btR(R+(1<<j)-1)>=tk) R+=1<<j;
 			}
-			else {
-				x=*AA.rbegin();
-				AA.erase(x);
-				DA.insert(x);
-				AS-=A(N)-A(x);
-				BS-=B(N)-B(x);
-				AS-=A(x)+B(x);
-				A.add(x,-1);
+			if(L<R) k=tk;
+		}
+		int m=0;
+		ll ret=1LL*k*(2*k+k-1)/2-1LL*k*(k-1)/2;
+		
+		for(i=20;i>=0;i--) {
+			int tm=m+(1<<i);
+			if(btL(N)<k+tm) continue;
+			if(btR(N)<k+tm) continue;
+			int L=N,R=0;
+			for(j=20;j>=0;j--) {
+				if(btL(L-(1<<j))>=k+tm) L-=1<<j;
+				if(btR(N)-btR(R+(1<<j)-1)>=k+tm) R+=1<<j;
 			}
 			
-		}
-		while(AA.size()<AB.size()) {
-			if(DA.size()) {
-				x=*DA.begin();
-				DA.erase(x);
-				AA.insert(x);
-				AS+=A(N)-A(x);
-				BS+=B(N)-B(x);
-				A.add(x,1);
-				AS+=A(x)+B(x);
-			}
-			else {
-				x=*AB.begin();
-				AB.erase(x);
-				DB.insert(x);
-				AS-=A(N)-A(x);
-				BS-=B(N)-B(x);
-				BS-=A(x)+B(x);
-				B.add(x,-1);
+			int M=L-R-1;
+			int A=btL(R);
+			int B=btR(N)-btR(L);
+			if(A+B-(M+1)>0) {
+				m=tm;
+				ret=1LL*(2*(A+M+2)+B-1)*B/2-1LL*A*(A-1)/2+(btRS(L)-btRS(R-1)-1LL*(R-A)*(k+tm-B))-(btLS(L)-btLS(R-1)-1LL*(R-A)*(k+tm-A));
+				/*
+				cout<<k<<" "<<tm<<" "<<L<<" "<<R<<" "<<A<<" "<<B<<endl;
+				cout<<(btRS(L)-btRS(R-1)-1LL*(R-A)*(k+tm-B))<<endl;
+				cout<<btRS(L)-btRS(R-1)<<endl;
+				cout<<S<<" "<<ret<<endl;
+				*/
 			}
 		}
 		
-		cout<<BS<<" "<<AS<<"   "<<AB.size()<<"/"<<AA.size()<<" "<<B(N)<<" "<<A(N)<<endl;
-		FORR(v,AA) cout<<v;
-		cout<<" : ";
-		FORR(v,AB) cout<<v;
-		cout<<endl;
-		cout<<BS-AS<<endl;
-		
+		cout<<ret<<endl;
 		
 	}
-	
-	
-	
 	
 }
 
