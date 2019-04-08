@@ -21,7 +21,7 @@ void solve() {
 	for(x=1;x<=N;x++) {
 		for(y=x;y<=N;y++) {
 			int z=N-x-y;
-			if(z>=y) cout<<x<<" "<<y<<" "<<z<<endl;
+			if(z>=y) _P("%d %d %d\n",x,y,z);
 		}
 	}
 }
