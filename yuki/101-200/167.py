@@ -2,6 +2,11 @@ import sys
 import math
 
 N=input()%10
-M=input()%600
+M=input()
 
-print (N**M)%10
+if M==0:
+	print 1
+else:
+	M=M%4+4
+	print (N**M)%10
+
