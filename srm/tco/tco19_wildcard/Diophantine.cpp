@@ -53,8 +53,7 @@ class Diophantine {
 	void test_case_0() { int Arg0 = 15; int Arg1 = 1; long long Arg2 = 2LL; verify_case(0, Arg2, countSolutions(Arg0, Arg1)); }
 	void test_case_1() { int Arg0 = 2470; int Arg1 = 0; long long Arg2 = 0LL; verify_case(1, Arg2, countSolutions(Arg0, Arg1)); }
 	void test_case_2() { int Arg0 = 30; int Arg1 = 500; long long Arg2 = 1LL; verify_case(2, Arg2, countSolutions(Arg0, Arg1)); }
-	//void test_case_3() { int Arg0 = 47; int Arg1 = 7; long long Arg2 = 14LL; verify_case(3, Arg2, countSolutions(Arg0, Arg1)); }
-	void test_case_3() { int Arg0 = 2500; int Arg1 = 2500; long long Arg2 = 14LL; verify_case(3, Arg2, countSolutions(Arg0, Arg1)); }
+	void test_case_3() { int Arg0 = 47; int Arg1 = 7; long long Arg2 = 14LL; verify_case(3, Arg2, countSolutions(Arg0, Arg1)); }
 
 // END CUT HERE
 
