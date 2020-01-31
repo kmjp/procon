@@ -17,47 +17,6 @@ ll A[202020];
 int L[202020],R[202020];
 ll ret[202020],M[202020];
 
-template<class V,int NV> class SegTree_1 {
-public:
-	vector<vector<V>> val;
-	static V const def=0;
-	V comp(V l,V r){ return max(l,r);};
-	
-	SegTree_1(){val.resize(NV*2);};
-	V getval(int x,int y,V v,int l=0,int r=NV,int k=1) { // x<=i<y
-		if(r<=x || y<=l) return 0;
-		if(x<=l && r<=y) {
-			return lower_bound(ALL(val[k]),v+1)-val[k].begin();
-		}
-		return getval(x,y,v,l,(l+r)/2,k*2)+getval(x,y,v,(l+r)/2,r,k*2+1);
-	}
-	void set(int entry,V v) {
-		val[entry+NV].clear();
-		val[entry+NV].push_back(v);
-	}
-	void build() {
-		for(int i=NV-1;i>=1;i--) {
-			val[i].clear();
-			int a=0,b=0;
-			int x=i*2,y=i*2+1;
-			while(a<val[x].size() || b<val[y].size()) {
-				if(a==val[x].size()) {
-					val[i].push_back(val[y][b++]);
-				}
-				else if(b==val[y].size()) {
-					val[i].push_back(val[x][a++]);
-				}
-				else if(val[x][a]<val[y][b]) {
-					val[i].push_back(val[x][a++]);
-				}
-				else {
-					val[i].push_back(val[y][b++]);
-				}
-			}
-		}
-	}
-};
-
 template<class V, int ME> class BIT {
 public:
 	V bit[1<<ME];
@@ -66,7 +25,6 @@ public:
 };
 BIT<ll,18> bt;
 
-SegTree_1<int,1<<18> st;
 pair<ll,int> P[202020];
 vector<int> ev[202020];
 
@@ -79,18 +37,24 @@ void solve() {
 		P[i]={A[i],i};
 	}
 	sort(P,P+N);
-	FOR(i,N) {
-		st.set(P[i].second,i);
-	}
 	
-	st.build();
 	FOR(i,Q) {
 		cin>>L[i]>>R[i];
 		L[i]--;
 		M[i]=N-1;
-		for(j=17;j>=0;j--) if(M[i]-(1<<j)>=0) {
-			if(st.getval(L[i],R[i],M[i]-(1<<j))>=(R[i]-L[i]+1)/2) M[i]-=1<<j;
+	}
+	for(j=17;j>=0;j--) {
+		FOR(i,Q) if(M[i]-(1<<j)>=0) ev[M[i]-(1<<j)].push_back(i);
+		
+		FOR(i,N) {
+			bt.add(P[i].second,1);
+			FORR(e,ev[i]) if(bt(R[e]-1)-bt(L[e]-1)>=(R[e]-L[e]+1)/2) M[e]-=1<<j;
+			ev[i].clear();
 		}
+		FOR(i,N) bt.add(i,-1);
+	}
+	
+	FOR(i,Q) {
 		ev[M[i]].push_back(i);
 		ll v=P[M[i]].first;
 		ret[i]+=1LL*((R[i]-L[i]+1)/2)*v-1LL*(R[i]-L[i]-(R[i]-L[i]+1)/2)*v;
