@@ -12,35 +12,42 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N;
-ll A[505050];
-map<ll,int> M,M2;
+int N,M;
+int V,R;
+ll A,B;
+ll SV[101010];
+ll SR[101010];
+ll mo=1000000007;
+
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N;
-	ll ret=0;
+	cin>>N>>M;
+	SV[0]=SR[0]=1;
 	FOR(i,N) {
-		cin>>A[i];
-		
-		M[A[i]]++;
-		if(i&&A[i]==A[i-1]) {
-			FORR(m,M) {
-				if(m.first==1) ret+=m.second;
-			}
-		}
-		else {
-			FORR(m,M) {
-				ll x=__gcd(m.first,A[i]);
-				if(x==1) ret+=m.second;
-				M2[x]+=m.second;
-			}
-			swap(M,M2);
-			M2.clear();
+		cin>>V;
+		for(x=100000;x>=V;x--) (SV[x]+=SV[x-V])%=mo;
+	}
+	
+	for(i=1;i<=100000;i++) (SV[i]+=SV[i-1])%=mo;
+	
+	FOR(i,M) {
+		cin>>R;
+		for(x=100000;x>=R;x--) (SR[x]+=SR[x-R])%=mo;
+	}
+	cin>>A>>B;
+	ll ret=0;
+	for(i=1;i<=100000;i++) if(SR[i]) {
+		ll a=A*i;
+		ll b=min(100000LL,B*i);
+		if(a<=b) {
+			(ret+=SR[i]*(SV[b]-SV[a-1]))%=mo;
 		}
 	}
-	cout<<ret<<endl;
+	
+	cout<<(ret%mo+mo)%mo<<endl;
+	
 }
 
 

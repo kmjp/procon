@@ -13,34 +13,13 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-ll A[505050];
-map<ll,int> M,M2;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
 	cin>>N;
-	ll ret=0;
-	FOR(i,N) {
-		cin>>A[i];
-		
-		M[A[i]]++;
-		if(i&&A[i]==A[i-1]) {
-			FORR(m,M) {
-				if(m.first==1) ret+=m.second;
-			}
-		}
-		else {
-			FORR(m,M) {
-				ll x=__gcd(m.first,A[i]);
-				if(x==1) ret+=m.second;
-				M2[x]+=m.second;
-			}
-			swap(M,M2);
-			M2.clear();
-		}
-	}
-	cout<<ret<<endl;
+	if(N%180==90) cout<<"Yes"<<endl;
+	else cout<<"No"<<endl;
 }
 
 

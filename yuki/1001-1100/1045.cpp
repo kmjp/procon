@@ -13,34 +13,39 @@ typedef signed long long ll;
 //-------------------------------------------------------
 
 int N;
-ll A[505050];
-map<ll,int> M,M2;
+int X[16][3];
+int ma[1<<16][16][3][3];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
+	MINUS(ma);
 	cin>>N;
-	ll ret=0;
 	FOR(i,N) {
-		cin>>A[i];
-		
-		M[A[i]]++;
-		if(i&&A[i]==A[i-1]) {
-			FORR(m,M) {
-				if(m.first==1) ret+=m.second;
+		cin>>X[i][0]>>X[i][1]>>X[i][2];
+		FOR(x,3) FOR(y,3) if(x!=y) ma[1<<i][i][x][y]=X[i][3-x-y];
+	}
+	
+	int ret=0;
+	for(int mask=0;mask<1<<N;mask++) FOR(i,N) if(mask&(1<<i)) {
+		FOR(x,3) FOR(y,3) if(x!=y && ma[mask][i][x][y]>=0) {
+			ret=max(ret,ma[mask][i][x][y]);
+			
+			FOR(j,N) if((mask&(1<<j))==0) {
+				int x2,y2;
+				FOR(x2,3) FOR(y2,3) if(x2!=y2) {
+					if(X[j][x2]>X[i][x]) continue;
+					if(X[j][y2]>X[i][y]) continue;
+					ma[mask|(1<<j)][j][x2][y2]=max(ma[mask|(1<<j)][j][x2][y2],ma[mask][i][x][y]+X[j][3-x2-y2]);
+				}
 			}
-		}
-		else {
-			FORR(m,M) {
-				ll x=__gcd(m.first,A[i]);
-				if(x==1) ret+=m.second;
-				M2[x]+=m.second;
-			}
-			swap(M,M2);
-			M2.clear();
+			
 		}
 	}
+	
 	cout<<ret<<endl;
+	
+	
 }
 
 

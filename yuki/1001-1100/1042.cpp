@@ -12,35 +12,24 @@ typedef signed long long ll;
 #define MINUS(a) memset(a,0xff,sizeof(a))
 //-------------------------------------------------------
 
-int N;
-ll A[505050];
-map<ll,int> M,M2;
+double P,Q;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N;
-	ll ret=0;
-	FOR(i,N) {
-		cin>>A[i];
+	cin>>P>>Q;
+	double L=1,R=1e15;
+	
+	FOR(i,100) {
+		double M=(L+R)/2;
 		
-		M[A[i]]++;
-		if(i&&A[i]==A[i-1]) {
-			FORR(m,M) {
-				if(m.first==1) ret+=m.second;
-			}
-		}
-		else {
-			FORR(m,M) {
-				ll x=__gcd(m.first,A[i]);
-				if(x==1) ret+=m.second;
-				M2[x]+=m.second;
-			}
-			swap(M,M2);
-			M2.clear();
-		}
+		double a=M*M;
+		double b=P+Q*M*log(M)/log(2);
+		if(a<=b) L=M;
+		else R=M;
+		
 	}
-	cout<<ret<<endl;
+	_P("%.12lf\n",L);
 }
 
 
