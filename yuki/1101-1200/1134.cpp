@@ -37,10 +37,22 @@ void solve() {
 	cin>>M;
 	M--;
 	
-	double B=abs(S-X[M])*10/A;
+	if(A==0) {
+		cout<<50<<endl;
+		return;
+	}
+	
+	
+	
+	double B=abs(S-X[M])*10.0/A;
 	double C;
-	if(X[M]>S) C=50+B;
-	else C=50-B;
+	if(X[M]>S) {
+		C=50+B;
+	}
+	else {
+		if(B>50) B=floor(B);
+		C=50-B;
+	}
 	cout<<floor(C)<<endl;
 	
 	
