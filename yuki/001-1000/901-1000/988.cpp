@@ -39,11 +39,11 @@ void solve() {
 		ll a=0,b=0;
 		FOR(x,W) {
 			cin>>A[x];
-			ret+=H*A[x];
+			ret+=H*A[x]%K;
 		}
 		FOR(y,H) {
 			cin>>B[y];
-			ret+=W*B[y];
+			ret+=W*B[y]%K;
 		}
 		ret%=K;
 	}

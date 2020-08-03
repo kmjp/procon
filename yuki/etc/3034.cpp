@@ -70,7 +70,7 @@ void solve() {
 		cout<<Q5(T,N)<<endl;
 		cout<<Q6(T,N)<<endl;
 		cout<<Q7(T,N)<<endl;
-		cout<<endl;
+		if(i!=T) cout<<endl;
 		
 	}
 }

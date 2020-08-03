@@ -30,7 +30,7 @@ void solve() {
 	FOR(i,N) cur[i]=i;
 	
 	srand(time(NULL));
-	FOR(i,100000) {
+	FOR(i,400000) {
 		random_shuffle(cur,cur+N);
 		ll tot=0;
 		FOR(y,N) FOR(x,y) tot+=mat[cur[x]][cur[y]];
