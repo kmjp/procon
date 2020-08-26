@@ -25,7 +25,7 @@ void solve() {
 	E/=A;
 	E-=(C/2)*(C/2);
 	E-=(D/2)*(D/2);
-	_P("%.12lf\n",sqrt(-E));
+	_P("%.12lf\n",sqrt(-E)*sqrt(abs(A)));
 }
 
 
