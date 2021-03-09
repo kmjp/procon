@@ -18,12 +18,15 @@ string S;
 int hoge(string S) {
 	int i,j;
 	int ret=0;
-	FOR(i,100) {
+	
+	
+	FOR(i,50) {
 		string R;
 		FORR(c,S) {
 			R+=c;
 			if(R.size()>=5 && R.substr(R.size()-5)=="phnom") {
-				R=R.substr(0,R.size()-5)+"penh";
+				R.resize(R.size()-5);
+				R+="penh";
 				ret++;
 			}
 		}
