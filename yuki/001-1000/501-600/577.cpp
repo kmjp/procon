@@ -61,7 +61,7 @@ bool issq(ll v) {
 	return 0;
 }
 
-set<ll> S,T;
+unordered_set<ll> S,T;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -87,7 +87,7 @@ void solve() {
 			FORR(c,S) {
 				if(ok) break;
 				ll left=N-c;
-				if(left<2) break;
+				if(left<2) continue;
 				if(S.count(left)) ok=1;
 			}
 		}
@@ -98,7 +98,7 @@ void solve() {
 			FORR(c,T) {
 				if(ok) break;
 				ll left=N-c;
-				if(left<2) break;
+				if(left<2) continue;
 				if(S.count(left) || (left>1000000 && MillerRabin(left)) || (left>1000000000000LL && issq(left))) ok=1;
 			}
 		}
