@@ -23,23 +23,23 @@ ll LD[202020],RD[202020];
 
 template<class V, int ME> class BIT {
 public:
-	V bit[1<<ME],val[1<<ME];
-	V total(int e) {V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
-	V add(int e,V v) { val[e++]+=v; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
+	V bit[1<<ME];
+	V operator()(int e) {if(e<0) return 0;V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
+	void add(int e,V v) { e++; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
 };
 
 BIT<ll,21> LL,RR,ret;
 
+vector<int> V;
+map<ll,ll> sameL,sameR;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
-	
 	cin>>N;
 	FOR(i,N) cin>>A[i];
 	cin>>Q;
 	FOR(i,Q) cin>>L[i]>>R[i];
 	
-	vector<int> V;
 	V.push_back(0);
 	V.push_back(1<<30);
 	FOR(i,N) V.push_back(A[i]);
@@ -49,18 +49,17 @@ void solve() {
 	
 	FOR(i,N) {
 		A[i]=lower_bound(ALL(V),A[i])-V.begin();
-		LU[i]=LL.total(1<<20)-LL.total(A[i]);
-		LD[i]=LL.total(A[i]-1);
+		LU[i]=LL(1<<20)-LL(A[i]);
+		LD[i]=LL(A[i]-1);
 		LL.add(A[i],1);
 	}
 	for(i=N-1;i>=0;i--) {
-		RU[i]=RR.total(1<<20)-RR.total(A[i]);
-		RD[i]=RR.total(A[i]-1);
+		RU[i]=RR(1<<20)-RR(A[i]);
+		RD[i]=RR(A[i]-1);
 		RR.add(A[i],1);
 		ret.add(A[i],LU[i]*RU[i]+LD[i]*RD[i]);
 	}
 	
-	map<ll,ll> sameL,sameR;
 	FOR(i,N) sameR[A[i]]++;
 	ll same=0;
 	FOR(i,N) {
@@ -74,7 +73,7 @@ void solve() {
 	FOR(i,Q) {
 		x=lower_bound(ALL(V),L[i])-V.begin();
 		y=lower_bound(ALL(V),R[i])-V.begin();
-		cout<<ret.total(y)-ret.total(x-1)<<endl;
+		cout<<ret(y)-ret(x-1)<<endl;
 	}
 	
 }
