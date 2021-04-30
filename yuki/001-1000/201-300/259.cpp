@@ -16,8 +16,7 @@ template<class V, int ME> class BIT {
 public:
 	V bit[1<<ME],val[1<<ME];
 	V total(int e) {V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
-	V add(int e,V v) { val[e++]+=v; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
-	V set(int e,V v) { add(e,v-val[e]);}
+	void add(int e,V v) { val[e++]+=v; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
 };
 
 BIT<ll,20> lbt,rbt;
