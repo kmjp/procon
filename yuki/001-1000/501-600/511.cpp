@@ -16,7 +16,7 @@ template<class V,int NV> class SegTree_3 {
 public:
 	vector<pair<V,int> > val;
 	vector<pair<V,int> > ma;
-	static V const def=-1LL<<60;
+	static V const def=-(1LL<<60);
 	SegTree_3(){
 		int i;
 		val.resize(NV*2); ma.resize(NV*2);
