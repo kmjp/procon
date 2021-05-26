@@ -22,7 +22,7 @@ int ask(char c) {
 
 int vis[50][50];
 
-int dfs(int cy,int cx,int d) {
+void dfs(int cy,int cx,int d) {
 	int i,x;
 	vis[cy][cx]=1;
 	

@@ -27,7 +27,7 @@ template<class V, int ME> class BIT {
 public:
 	V bit[1<<ME];
 	V operator()(int e) {V s=0;e++;while(e) s+=bit[e-1],e-=e&-e; return s;}
-	V add(int e,V v) { e++; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
+	void add(int e,V v) { e++; while(e<=1<<ME) bit[e-1]+=v,e+=e&-e;}
 };
 BIT<int,20> bt;
 int num[30];
@@ -49,7 +49,10 @@ void solve() {
 		if(s[0]=='?') Q[i]=-1;
 		else Q[i]=s[0]-'A';
 		
-		if(U.count(S[i])==0) U[S[i]]=U.size()-1;
+		if(U.count(S[i])==0) {
+			x=U.size();
+			U[S[i]]=x;
+		}
 		ID[i]=U[S[i]];
 		
 		if(Q[i]>=0) {
