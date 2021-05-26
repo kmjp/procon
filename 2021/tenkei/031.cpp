@@ -14,7 +14,8 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 //-------------------------------------------------------
 
 
-int G[55][2555];
+int G[55][5050];
+int W[100051],B[100051];
 
 int hoge(int W,int B) {
 	if(G[W][B]>=0) return G[W][B];
@@ -35,7 +36,6 @@ void solve() {
 	MINUS(G);
 	int N;
 	cin>>N;
-	int W[51],B[51];
 	int nim=0;
 	FOR(i,N) cin>>W[i];
 	FOR(i,N) cin>>B[i];
