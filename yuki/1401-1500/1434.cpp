@@ -44,7 +44,7 @@ void solve() {
 			S[y]=string(W,'#');
 			FOR(x,W) if(y%2==0||x==0) S[y][x]='.';
 		}
-		for(y=1;y<W;y+=4) {
+		for(y=1;y<H;y+=4) {
 			for(x=0;x<W-1;x+=2) if(X) {
 				X--;
 				S[y][x]='#';
