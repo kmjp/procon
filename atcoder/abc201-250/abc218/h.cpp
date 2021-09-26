@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef signed long long ll;
+
+#define _P(...) (void)printf(__VA_ARGS__)
+#define FOR(x,to) for(x=0;x<(to);x++)
+#define FORR(x,arr) for(auto& x:arr)
+#define FORR2(x,y,arr) for(auto& [x,y]:arr)
+#define ALL(a) (a.begin()),(a.end())
+#define ZERO(a) memset(a,0,sizeof(a))
+#define MINUS(a) memset(a,0xff,sizeof(a))
+template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;}
+template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
+//-------------------------------------------------------
+
+int N,R;
+ll A[202020];
+ll B[202020];
+
+void solve() {
+	int i,j,k,l,r,x,y; string s;
+	
+	cin>>N>>R;
+	FOR(i,N-1) cin>>A[i+1];
+	set<int> alive;
+	set<pair<int,int>> cand;
+	
+	for(i=1;i<=N;i++) {
+		B[i]=A[i]+A[i-1];
+		alive.insert(i);
+		cand.insert({-B[i],i});
+	}
+	
+	if(R>N-R) R=N-R;
+	ll ret=0;
+	while(R--) {
+		auto p=*cand.begin();
+		cand.erase(cand.begin());
+		ret+=-p.first;
+		x=p.second;
+		alive.erase(x);
+		auto it=alive.lower_bound(x);
+		if(it!=alive.begin()) {
+			y=*prev(it);
+			if(y>0) {
+				cand.erase({-B[y],y});
+				alive.erase(y);
+			}
+		}
+		if(it!=alive.end()) {
+			x=*it;
+			cand.erase({-B[x],x});
+			B[x]=A[x];
+			auto it=alive.lower_bound(x);
+			if(it!=alive.begin()) {
+				B[x]+=A[*prev(it)];
+			}
+			cand.insert({-B[x],x});
+		}
+	}
+	cout<<ret<<endl;
+	
+}
+
+
+int main(int argc,char** argv){
+	string s;int i;
+	if(argc==1) ios::sync_with_stdio(false), cin.tie(0);
+	FOR(i,argc-1) s+=argv[i+1],s+='\n'; FOR(i,s.size()) ungetc(s[s.size()-1-i],stdin);
+	cout.tie(0); solve(); return 0;
+}
