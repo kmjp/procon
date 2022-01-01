@@ -18,7 +18,7 @@ int P[808];
 int X[808],Y[808];
 int S[808],T[808];
 
-
+unordered_map<ll,ll> C;
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
@@ -34,9 +34,12 @@ void solve() {
 		if(k==1||k==3) {
 			FOR(i,M) T[i]=-T[i];
 		}
-		map<pair<int,int>,ll> C;
+		C.clear();
 		FOR(x,N) FOR(y,M) {
-			C[{X[x]-S[y],Y[x]-T[y]}]+=P[x];
+			i=X[x]-S[y];
+			j=Y[x]-T[y];
+			ll a=(((ll)i)<<31)+j;
+			C[a]+=P[x];
 		}
 		FORR2(a,b,C) ma=max(ma,b);
 	}
