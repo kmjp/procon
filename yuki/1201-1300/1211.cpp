@@ -17,21 +17,22 @@ int N,K;
 ll A[101010];
 ll S[203030];
 
-ll nex[101010][22];
-ll nex2[101010];
+int nex[22][101010];
+int nex2[101010];
 
 int ok(ll v) {
 	if(S[N]/K<v) return 0;
 	
-	int i,j;
+	int i,j,R=0;
 	FOR(i,N) {
-		nex[i][0]=lower_bound(S,S+2*N+2,S[i]+v)-(S+i);
+		while(S[R]<S[i]+v) R++;
+		nex[0][i]=R-i;
 	}
 	ZERO(nex2);
 	FOR(j,17) {
-		FOR(i,N) nex[i][j+1]=nex[i][j]+nex[(i+nex[i][j])%N][j];
+		FOR(i,N) nex[j+1][i]=min(N+1,nex[j][i]+nex[j][(i+nex[j][i])%N]);
 		if(K&(1<<j)) {
-			FOR(i,N) if(nex2[i]<N) nex2[i]+=nex[(i+nex2[i])%N][j];
+			FOR(i,N) if(nex2[i]<N) nex2[i]+=nex[j][(i+nex2[i])%N];
 		}
 	}
 	FOR(i,N) if(nex2[i]<=N) return 1;
