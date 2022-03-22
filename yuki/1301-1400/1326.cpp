@@ -84,8 +84,7 @@ int A[101010],B[101010];
 vector<int> E[303030];
 set<int> NE[303030];
 UF<303030> uf;
-int isart[301010];
-int isarts[301010];
+int isart[301010],isarts[301010];
 vector<int> V[303030];
 
 
@@ -94,7 +93,7 @@ int P[21][300005],D[300005];
 void dfs(int cur,int ps) {
 	ps+=isart[cur];
 	isarts[cur]=ps;
-	FORR(e,NE[cur]) if(e!=P[0][cur]) D[e]=D[cur]+1, P[0][e]=cur, dfs(e,ps);
+	FORR(e,E[cur]) if(e!=P[0][cur]) D[e]=D[cur]+1, P[0][e]=cur, dfs(e,ps);
 }
 int getpar(int cur,int up) {
 	int i;
@@ -120,48 +119,27 @@ void solve() {
 		cin>>A[i]>>B[i];
 		A[i]--;
 		B[i]--;
-		ME[{A[i],B[i]}]=ME[{B[i],A[i]}]=i;
 		scc.add_edge(A[i],B[i]);
-		E[A[i]].push_back(N+2*i);
-		E[N+2*i].push_back(A[i]);
-		E[B[i]].push_back(N+2*i+1);
-		E[N+2*i+1].push_back(B[i]);
-		E[N+2*i].push_back(N+2*i+1);
-		E[N+2*i+1].push_back(N+2*i);
 	}
 	scc.scc();
-	FORR(a,scc.ART) isart[a]=1;
-	FOR(i,N) if(isart[i]==0) {
-		FORR(e,E[i]) uf(i,e);
+	FORR(a,scc.ART) {
+		isart[a]=1;
 	}
-	FOR(i,N) if(isart[i]) assert(uf.count(i)==1);
 	
-	FORR(e,scc.BE) {
-		int pre=-1;
-		FORR(s,e) {
-			x=s.first;
-			y=s.second;
-			i=ME[{x,y}];
-			if(A[i]==y) swap(x,y);
-			uf(N+i*2,N+i*2+1);
-			if(pre>=0) uf(pre,N+i*2);
-			pre=N+i*2;
-		}
+	FOR(i,scc.BE.size()) {
+		set<int> S;
+		FORR2(a,b,scc.BE[i]) S.insert(a),S.insert(b);
+		FORR(s,S) E[N+i].push_back(s), E[s].push_back(N+i);
 	}
-	FOR(i,N+2*M) {
-		FORR(e,E[i]) if(uf[i]!=uf[e]) {
-			NE[uf[e]].insert(uf[i]);
-			NE[uf[i]].insert(uf[e]);
-			
-		}
-	}
-	dfs(uf[0],0);
+	cout<<scc.ART.size()<<" "<<scc.BE.size()<<endl;
+	
+	dfs(0,0);
 	FOR(i,19) FOR(x,N+M*2) P[i+1][x]=P[i][P[i][x]];
 	cin>>Q;
 	while(Q--) {
 		cin>>x>>y;
-		x=uf[x-1];
-		y=uf[y-1];
+		x--;
+		y--;
 		
 		if(x==y) {
 			cout<<0<<endl;
