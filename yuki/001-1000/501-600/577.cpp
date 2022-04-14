@@ -61,7 +61,8 @@ bool issq(ll v) {
 	return 0;
 }
 
-unordered_set<ll> S,T;
+unordered_set<ll> S,S2,T;
+int is[1010101];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
@@ -72,23 +73,23 @@ void solve() {
 		ll a=1;
 		while(a*prime[i]/prime[i]==a) {
 			a*=prime[i];
-			if(a>1000000000000000000LL) break;
+			if(a<0||a>1000000000000000000LL) break;
 			S.insert(a);
+			if(a<=1000000) S2.insert(a), is[a]=1;
 			if(i==0) T.insert(a);
 		}
 	}
-	
 	cin>>Q;
 	while(Q--) {
 		cin>>N;
 		
 		int ok=0;
 		if(N<=1000000) {
-			FORR(c,S) {
+			FORR(c,S2) {
 				if(ok) break;
 				ll left=N-c;
 				if(left<2) continue;
-				if(S.count(left)) ok=1;
+				if(is[left]) ok=1;
 			}
 		}
 		else if(N%2==0) {
