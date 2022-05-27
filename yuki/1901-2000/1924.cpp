@@ -14,54 +14,33 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 //-------------------------------------------------------
 
 int N;
-vector<ll> A,B,MA,MB,M1A,M1B;
-const ll mo=1000000007;
-const ll M=1000000000;
-
-ll hoge(vector<ll> A,vector<ll> B) {
-	vector<ll> X,Y;
-	int i;
-	FOR(i,A.size()) {
-		X.push_back(A[i]+B[i]);
-		Y.push_back(A[i]-B[i]);
-	}
-	sort(ALL(X));
-	sort(ALL(Y));
-	ll ret=0;
-	int num=0;
-	ll sum=0;
-	FORR(x,X) {
-		x=(x%mo+mo)%mo;
-		(ret+=num*x-sum)%=mo;
-		(sum+=x)%=mo;
-		num++;
-	}
-	num=sum=0;
-	FORR(x,Y) {
-		x=(x%mo+mo)%mo;
-		(ret+=num*x-sum)%=mo;
-		(sum+=x)%=mo;
-		num++;
-	}
-	return (ret%mo+mo)%mo;
-	
-}
+string S,T;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N;
-	FOR(i,N) {
-		cin>>x;
-		MA.push_back(M*x);
-		M1A.push_back((M+1)*x);
+	cin>>N>>S;
+	int ret=0;
+	FORR(c,S) {
+		if(T.empty()) {
+			T+=c;
+		}
+		else if(T.back()==c) {
+			continue;
+		}
+		else if(T.size()>=2&&T[T.size()-2]==c) {
+			ret++;
+			T.pop_back();
+		}
+		else {
+			T+=c;
+		}
 	}
-	FOR(i,N) {
-		cin>>x;
-		MB.push_back(M*x);
-		M1B.push_back((M+1)*x);
-	}
-	cout<<(hoge(M1A,M1B)-hoge(MA,M1B)+mo)%mo<<" "<<(hoge(M1A,M1B)-hoge(M1A,MB)+mo)%mo<<endl;
+	
+	FORR(c,T) if(c!=T[0]) ret++;
+	ret++;
+	
+	cout<<ret<<endl;
 }
 
 
