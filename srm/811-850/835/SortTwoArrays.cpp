@@ -52,10 +52,6 @@ class SortTwoArrays {
 				go(x,y);
 			}
 		}
-		FOR(i,N-1) assert(A[i]<=A[i+1]);
-		FOR(i,N-1) assert(B[i]<=B[i+1]);
-		cout<<N<<" "<<A.size()<<" "<<B.size()<<" "<<R.size()<<" "<<6*N<<endl;
-		assert(R.size()<=6*N);
 		return R;
 		
 	}
