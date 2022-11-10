@@ -15,19 +15,22 @@ typedef signed long long ll;
 int N,M,K;
 int S,T;
 int X[202020],Y[202020];
+bitset<2020> B[2020];
 vector<int> E[202020];
 double D[2020];
 vector<int> P[2020];
+double dist[2020][2020];
 
 pair<double,vector<int>> hoge(int start,set<pair<int,int>> NG,vector<int> pref,double prel) {
 	int i;
 	
-	FOR(i,N) D[i]=1e9, P[i].clear();
+	FOR(i,N) D[i]=1e9, P[i].clear(), B[i].reset();
 	FORR(p,pref) D[p]=-1;
 	D[start]=prel;
 	
 	P[start]=pref;
 	P[start].push_back(start);
+	FORR(p,pref) B[start][p]=1;
 	priority_queue<pair<double,int>> Q;
 	Q.push({-prel,start});
 	while(Q.size()) {
@@ -38,12 +41,14 @@ pair<double,vector<int>> hoge(int start,set<pair<int,int>> NG,vector<int> pref,d
 		FORR(e,E[cur]) {
 			if(NG.count({e,cur})) continue;
 			if(NG.count({cur,e})) continue;
-			if(count(ALL(P[cur]),e)) continue;
-			double d=co+hypot(X[cur]-X[e],Y[cur]-Y[e]);
+			if(B[cur][e]) continue;
+			double d=co+dist[cur][e];
 			if(D[e]>d) {
 				D[e]=d;
 				P[e]=P[cur];
 				P[e].push_back(e);
+				B[e]=B[cur];
+				B[e][e]=1;
 				Q.push({-d,e});
 			}
 		}
@@ -60,6 +65,7 @@ void solve() {
 	cin>>N>>M>>K>>S>>T;
 	S--,T--;
 	FOR(i,N) cin>>X[i]>>Y[i];
+	FOR(x,N) FOR(y,N) dist[x][y]=hypot(X[x]-X[y],Y[x]-Y[y]);
 	FOR(i,M) {
 		cin>>x>>y;
 		E[x-1].push_back(y-1);
@@ -76,7 +82,7 @@ void solve() {
 		FOR(x,ret.back().second.size()-1) {
 			if(x) {
 				pre.push_back(ret.back().second[x-1]);
-				sum+=hypot(X[ret.back().second[x-1]]-X[ret.back().second[x]],Y[ret.back().second[x-1]]-Y[ret.back().second[x]]);
+				sum+=dist[ret.back().second[x-1]][ret.back().second[x]];
 			}
 			NG.clear();
 			FOR(i,ret.size()) {
