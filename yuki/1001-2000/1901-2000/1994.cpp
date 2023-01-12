@@ -16,7 +16,7 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 
 int N;
 string S[505050];
-set<string> SS;
+unordered_set<string> SS;
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
