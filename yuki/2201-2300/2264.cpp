@@ -13,30 +13,44 @@ template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;
 template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
 //-------------------------------------------------------
 
+int N,M;
+ll A[1010];
+const ll mo=998244353;
 
-ll H,W,LA,LB,KA,KB;
-
-int ok(ll a,ll b) {
-	ll ah=min(H,a*LA);
-	ll aw=min(W,b*LB);
-	return (H*W-ah*aw<=a*KA+b*KB);
+ll modpow(ll a, ll n = mo-2) {
+	ll r=1;a%=mo;
+	while(n) r=r*((n%2)?a:1)%mo,a=a*a%mo,n>>=1;
+	return r;
 }
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>H>>W>>LA>>LB>>KA>>KB;
-	int mi=1<<28;
-	for(y=0;y<=2000000;y++) {
-		int XL=-1,XR=W+1;
-		while(XL+1<XR) {
-			int XM=(XL+XR)/2;
-			if(ok(y,XM)) XR=XM;
-			else XL=XM;
-		}
-		if(XR<=W) mi=min(mi,y+XR);
+	cin>>N>>M;
+	ll L=1;
+	FOR(i,N) {
+		cin>>A[i];
+		L=L*A[i]/__gcd(L,A[i]);
 	}
-	cout<<mi<<endl;
+	ll ret=0;
+	vector<pair<ll,ll>> C;
+	for(i=1;i*i<=L;i++) if(L%i==0) {
+		C.push_back({i,0});
+		if(i*i!=L) C.push_back({L/i,0});
+	}
+	sort(ALL(C));
+	FORR2(g,v,C) {
+		v=1;
+		FOR(i,N) {
+			x=__gcd(g,(ll)A[i]);
+			(v*=modpow(M,x))%=mo;
+		}
+		FORR2(g2,v2,C) if(g2<g&&g%g2==0) v+=mo-v2;
+		v%=mo;
+		ret+=v*modpow(g)%mo;
+	}
+	cout<<ret%mo<<endl;
+	
 }
 
 

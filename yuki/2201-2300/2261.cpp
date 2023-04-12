@@ -13,30 +13,35 @@ template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;
 template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
 //-------------------------------------------------------
 
-
-ll H,W,LA,LB,KA,KB;
-
-int ok(ll a,ll b) {
-	ll ah=min(H,a*LA);
-	ll aw=min(W,b*LB);
-	return (H*W-ah*aw<=a*KA+b*KB);
-}
-
+int N;
+ll A[101010][5];
+ll ret[101010];
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>H>>W>>LA>>LB>>KA>>KB;
-	int mi=1<<28;
-	for(y=0;y<=2000000;y++) {
-		int XL=-1,XR=W+1;
-		while(XL+1<XR) {
-			int XM=(XL+XR)/2;
-			if(ok(y,XM)) XR=XM;
-			else XL=XM;
+	cin>>N;
+	FOR(i,N) FOR(j,5) cin>>A[i][j];
+	int mask;
+	FOR(mask,1<<5) {
+		ll mi=-1LL<<60;
+		FOR(i,N) {
+			ll a=0;
+			FOR(j,5) {
+				if(mask&(1<<j)) a+=A[i][j];
+				else a-=A[i][j];
+			}
+			mi=max(mi,a);
 		}
-		if(XR<=W) mi=min(mi,y+XR);
+		FOR(i,N) {
+			ll a=0;
+			FOR(j,5) {
+				if(mask&(1<<j)) a-=A[i][j];
+				else a+=A[i][j];
+			}
+			ret[i]=max(ret[i],a+mi);
+		}
 	}
-	cout<<mi<<endl;
+	FOR(i,N) cout<<ret[i]<<endl;
 }
 
 

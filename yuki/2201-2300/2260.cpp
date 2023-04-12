@@ -14,29 +14,23 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 //-------------------------------------------------------
 
 
-ll H,W,LA,LB,KA,KB;
-
-int ok(ll a,ll b) {
-	ll ah=min(H,a*LA);
-	ll aw=min(W,b*LB);
-	return (H*W-ah*aw<=a*KA+b*KB);
-}
+int N,P;
+ll A[101010];
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>H>>W>>LA>>LB>>KA>>KB;
-	int mi=1<<28;
-	for(y=0;y<=2000000;y++) {
-		int XL=-1,XR=W+1;
-		while(XL+1<XR) {
-			int XM=(XL+XR)/2;
-			if(ok(y,XM)) XR=XM;
-			else XL=XM;
+	cin>>N>>P;
+	FOR(i,N) cin>>A[i];
+	ll ret=0;
+	ll a=1;
+	for(ll p=P;p<=1000000000;p*=P) {
+		map<ll,int> M;
+		FOR(i,N) {
+			ret+=M[A[i]%p]++;
 		}
-		if(XR<=W) mi=min(mi,y+XR);
 	}
-	cout<<mi<<endl;
+	cout<<ret<<endl;
 }
 
 
