@@ -16,3 +16,29 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 
 
 
+class Solution {
+public:
+    vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
+		set<int> A;
+		deque<pair<int,int>> D;
+		vector<pair<int,int>> V;
+		int i;
+		int N=nums.size();
+		FOR(i,N) V.push_back({nums[i],i});
+		sort(ALL(V));
+		int x,y;
+		y=0;
+		FOR(x,N) {
+			while(y<=x&&V[y].first+valueDifference<=V[x].first) {
+				A.insert(V[y].second);
+				y++;
+			}
+			auto it=A.lower_bound(V[x].second+indexDifference);
+			if(it!=A.end()) return  {V[x].second,*it};
+			it=A.lower_bound(V[x].second-indexDifference+1);
+			if(it!=A.begin()) return  {V[x].second,*prev(it)};
+			
+		}
+        return {-1,-1};
+    }
+};
