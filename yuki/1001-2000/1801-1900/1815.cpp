@@ -56,8 +56,8 @@ Mat powmat(ll p,Mat a,int n=MAT) {
 	return r;
 }
 
-void dfs(vector<int> V,Mat& A,int K) {
-	int ma=*max_element(ALL(V))+1;
+void dfs(vector<int>& V,Mat& A,int K) {
+	
 	if(V.size()==6) {
 		if(V[0]==V[3]) return;
 		if(V[1]==V[4]) return;
@@ -66,7 +66,7 @@ void dfs(vector<int> V,Mat& A,int K) {
 		if(V[4]==V[5]) return;
 		int x=V[0]==V[2];
 		int y=V[3]==V[5];
-		
+		int ma=*max_element(ALL(V))+1;
 		if(x) A.v[y][x]+=P(K-2,ma-2);
 		else A.v[y][x]+=P(K-3,ma-3);
 
@@ -74,6 +74,7 @@ void dfs(vector<int> V,Mat& A,int K) {
 	}
 	else {
 		int i;
+		int ma=*max_element(ALL(V))+1;
 		FOR(i,ma+1) {
 			V.push_back(i);
 			dfs(V,A,K);
@@ -97,8 +98,11 @@ ll hoge(ll K) {
 		ret=K*(K-1)%mo*A.v[0][0]%mo;
 	}
 	else {
-		dfs({0,1,0},A,K);
-		dfs({0,1,2},A,K);
+		vector<int> V;
+		V={0,1,0};
+		dfs(V,A,K);
+		V={0,1,2};
+		dfs(V,A,K);
 		int x,y;
 		FOR(x,2) FOR(y,2) A.v[y][x]%=mo;
 		
