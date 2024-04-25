@@ -14,6 +14,7 @@ typedef signed long long ll;
 
 int N,K;
 ll dp[1024][11];
+int num[1024];
 const ll mo=998244353;
 
 void solve() {
@@ -23,10 +24,12 @@ void solve() {
 	dp[0][0]=1;
 	FOR(i,N) {
 		cin>>x;
+		num[x]++;
+	}
+	FOR(x,1024) {
 		for(j=9;j>=0;j--) {
 			FOR(y,1024) if((y&x)==0 && dp[y][j]) {
-				dp[y^x][j+1]+=dp[y][j];
-				if(dp[y^x][j+1]>=mo) dp[y^x][j+1]-=mo;
+				(dp[y^x][j+1]+=dp[y][j]*num[x])%=mo;;
 			}
 		}
 	}
