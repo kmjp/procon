@@ -6,7 +6,7 @@ bs4==0.0.1
 certifi==2023.7.22
 chardet==3.0.4
 fuse-python==1.0.0
-idna==2.8
+idna==3.7
 isort==4.3.21
 lazy-object-proxy==1.4.3
 lxml==4.9.1
