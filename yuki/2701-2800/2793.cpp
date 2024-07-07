@@ -33,8 +33,8 @@ void solve() {
 		ll sum=0;
 		FOR(i,N) {
 			cin>>A[i];
-			sum+=1LL*(i+1)*(A[i]-1);
-			ret=ret*(modpow(K,i+1)-1)%mo;
+			sum+=1LL*(i+1)*(A[i]-1)%(mo-1);
+			ret=ret*(modpow(K,i+1)+mo-1)%mo;
 		}
 		ret=ret*modpow(K,sum)%mo;
 		cout<<ret<<endl;

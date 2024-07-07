@@ -78,7 +78,7 @@ static ll fact[NUM_+1],factr[NUM_+1],inv[NUM_+1];
 
 ll comb(ll N_, ll C_) {
 	if(C_<0 || C_>N_) return 0;
-	return factr[C_]*fact[N_]%mo*factr[N_-C_]%mo;
+	return fact[N_]%mo*factr[N_-C_]%mo;
 }
 
 void solve() {
@@ -91,20 +91,23 @@ void solve() {
 	cin>>N>>M;
 	V={1};
 	V.resize(4096);
-	vector<ll> W;
+	vector<ll> W(4096);
 	
-	FOR(i,N+1) W.push_back(factr[i]);
+	FOR(i,2048) W[i]=factr[i];
 	W[0]=0;
 	
 	ll ret=0;
 	for(i=1;i<=min(N,M+1);i++) {
-		V=MultPoly(V,W,1);
-		V.resize(N+1);
+		V=MultPoly(V,W);
 		
 		ll pat=0;
-		for(int len=1;len<=N;len++) {
-			(pat+=V[len]%mo*fact[len]%mo*comb(N,len)%mo*modpow(M+1+max(0,M-i),N-len))%=mo;
+		ll mu=M+1+max(0,M-i);
+		ll MA=1;
+		for(int len=N;len>=1;len--) {
+			(pat+=V[len]*comb(N,len)%mo*MA)%=mo;
+			(MA*=mu)%=mo;
 		}
+		for(j=N+2;j<4096;j++) V[j]=0;
 		(ret+=i*pat)%=mo;
 	}
 	
