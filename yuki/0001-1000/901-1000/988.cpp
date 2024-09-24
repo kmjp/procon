@@ -22,7 +22,7 @@ void solve() {
 	
 	cin>>H>>W>>K>>S;
 	
-	ll ret;
+	ll ret=0;
 	if(S=="*") {
 		ll a=0,b=0;
 		FOR(x,W) {
