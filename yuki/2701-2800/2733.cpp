@@ -16,11 +16,11 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 int N,M;
 int E[6][6];
 int K;
-const ll mo=998244353;
+const int mo=998244353;
 
 ll p[7];
 
-map<ll,ll> dp[50][7];
+unordered_map<int,int> dp[50][7];
 
 
 
