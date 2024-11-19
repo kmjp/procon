@@ -16,32 +16,43 @@ template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;
 int N,K;
 ll T,A[202020],B[202020];
 pair<ll,ll> P[202020];
+priority_queue<ll> Q1;
+multiset<ll> Q3;
+unordered_multiset<ll> Q2;
 
 ll ok(int v) {
 	if(v>N) return T+1;
+	while(Q1.size()) Q1.pop();
+	Q2.clear();
+	Q3.clear();
 	
 	ll S=0;
-	multiset<ll> Q1,Q2,Q3;
 	int i;
 	FOR(i,K) {
 		S+=B[i];
-		Q1.insert(B[i]);
+		Q1.push(B[i]);
 	}
+	vector<ll> V(N-K);
 	FOR(i,N-K) {
-		Q3.insert(A[i+K]);
+		V[i]=A[i+K];
 	}
+	sort(ALL(V));
 	Q3.insert(1LL<<60);
-	FOR(i,v-K) {
-		ll a=*Q3.begin();
-		Q3.erase(Q3.begin());
-		Q2.insert(a);
-		S+=a;
+	FOR(i,V.size()) {
+		if(i<v-K) {
+			Q2.insert(V[i]);
+			S+=V[i];
+		}
+		else {
+			Q3.insert(V[i]);
+		}
 	}
 	if(S<=T) return S;
 	for(i=K;i<N;i++) {
 		ll a=A[i];
-		if(Q2.count(a)) {
-			Q2.erase(Q2.find(a));
+		auto it=Q2.find(a);
+		if(it!=Q2.end()) {
+			Q2.erase(it);
 			S-=a;
 			ll b=*Q3.begin();
 			S+=b;
@@ -50,15 +61,14 @@ ll ok(int v) {
 			Q2.insert(b);
 		}
 		else {
-			assert(Q3.count(a));
 			Q3.erase(Q3.find(a));
 		}
 		ll b=B[i];
-		if(b<*Q1.rbegin()) {
-			S-=*Q1.rbegin();
-			Q1.erase(Q1.find(*Q1.rbegin()));
+		if(b<Q1.top()) {
+			S-=Q1.top();
+			Q1.pop();
 			S+=b;
-			Q1.insert(b);
+			Q1.push(b);
 		}
 		if(S<=T) return S;
 	}
