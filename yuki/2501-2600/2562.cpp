@@ -31,6 +31,7 @@ void solve() {
 		a=a*1000000000;
 		x=M-a%M;
 		if(x!=M) a+=x;
+		if(a==0) a=M;
 		cout<<a<<endl;
 	}
 }
