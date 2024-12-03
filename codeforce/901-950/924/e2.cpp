@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef signed long long ll;
+
+#define _P(...) (void)printf(__VA_ARGS__)
+#define FOR(x,to) for(x=0;x<(to);x++)
+#define FORR(x,arr) for(auto& x:arr)
+#define FORR2(x,y,arr) for(auto& [x,y]:arr)
+#define ALL(a) (a.begin()),(a.end())
+#define ZERO(a) memset(a,0,sizeof(a))
+#define MINUS(a) memset(a,0xff,sizeof(a))
+template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;}
+template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
+//-------------------------------------------------------
+
+int T;
+ll N,X,Y,S;
+
+ll from[202020];
+ll mi[202020];
+
+void solve() {
+	int i,j,k,l,r,x,y; string s;
+	
+	FOR(i,201010) mi[i]=1<<20;
+	mi[0]=0;
+	FOR(i,201010) {
+		for(x=1;i+x*(x-1)/2<=201010;x++) {
+			if(mi[i+x*(x-1)/2]>mi[i]+x) {
+				mi[i+x*(x-1)/2]=mi[i]+x;
+				from[i+x*(x-1)/2]=x;
+			}
+		}
+	}
+	
+	
+	cin>>T;
+	while(T--) {
+		cin>>N>>X>>Y>>S;
+		ll a=X%Y*N;
+		S-=a;
+		if(S<0||S%Y) {
+			cout<<"NO"<<endl;
+			continue;
+		}
+		S/=Y;
+		for(i=1;i<=N;i++) {
+			ll pat=(X/Y+(X/Y+i-1))*i/2;
+			if(pat>S) continue;
+			if(mi[S-pat]<=N-i) {
+				vector<ll> V;
+				FOR(j,i) V.push_back(X+j*Y);
+				int cur=S-pat;
+				while(cur) {
+					x=from[cur];
+					FOR(j,x) V.push_back(X%Y+j*Y);
+					cur-=x*(x-1)/2;
+				}
+				while(V.size()<N) V.push_back(X%Y);
+				cout<<"YES"<<endl;
+				FORR(v,V) cout<<v<<" ";
+				cout<<endl;
+				break;
+			}
+		}
+		if(i==N+1) cout<<"NO"<<endl;
+	}
+}
+
+
+int main(int argc,char** argv){
+	string s;int i;
+	if(argc==1) ios::sync_with_stdio(false), cin.tie(0);
+	FOR(i,argc-1) s+=argv[i+1],s+='\n'; FOR(i,s.size()) ungetc(s[s.size()-1-i],stdin);
+	cout.tie(0); solve(); return 0;
+}
