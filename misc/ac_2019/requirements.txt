@@ -15,7 +15,7 @@ online-judge-tools==7.3.0
 pathspec==0.6.0
 pylint==2.4.4
 regex==2019.11.1
-requests==2.32.0
+requests==2.32.4
 requests-cache==0.5.2
 rope==0.14.0
 soupsieve==1.9.5
