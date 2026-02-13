@@ -13,31 +13,59 @@ template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;
 template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
 //-------------------------------------------------------
 
-int N,M;
+ll p2[10],p5[10];
+map<int,pair<int,int>> M;
 
-int C[161616];
+int X,Y;
 
-
+void turn(int nx) {
+	X=nx;
+	cout<<X<<endl;
+	if(X==Y) exit(0);
+	cin>>Y;
+	if(X==Y) exit(0);
+}
 
 void solve() {
 	int i,j,k,l,r,x,y; string s;
 	
-	cin>>N>>M;
+	p2[0]=p5[0]=1;
+	FOR(i,9) {
+		p2[i+1]=2*p2[i];
+		p5[i+1]=5*p5[i];
+	}
+	FOR(x,10) FOR(y,10) M[p2[x]*p5[y]]={x,y};
 	
-	for(x=0;x<=M;x++) {
-		for(y=0;y<=x&&x*x+y*y+x*y<=N;y++) {
-			for(i=0;i<=y;i++) {
-				int S=x*x+y*y+i*i+x*y+x*i+y*i;
-				int num=6;
-				if(x==y&&y!=i) num=3;
-				if(x!=y&&y==i) num=3;
-				if(x==i) num=1;
-				for(j=0;j<=M&&S+j*(x+y+j+i)<=N;j++) C[S+j*(x+y+j+i)]+=num;
-			}
+	cin>>X>>Y;
+	while(1) {
+		x=M[X].first;
+		y=M[X].second;
+		if(x<7) turn(X*2);
+		else if(x>7) turn(X/2);
+		else if(y<9) turn(X*5);
+		else break;
+	}
+	x=M[X].first+M[X].second;
+	y=M[Y].first+M[Y].second;
+	if(abs(x-y)%2) {
+		turn(X*2);
+		turn(X*2);
+	}
+	else {
+		turn(X*4);
+	}
+	while(1) {
+		x=M[X].first+M[X].second;
+		y=M[Y].first+M[Y].second;
+		assert(abs(x-y)%2);
+		if(M[X].first-M[Y].first>M[X].second-M[Y].second) {
+			turn(X/2);
+		}
+		else {
+			turn(X/5);
 		}
 	}
-	FOR(i,N+1) cout<<C[i]<<endl;
-	
+		
 }
 
 
