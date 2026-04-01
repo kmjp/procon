@@ -1,0 +1,97 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef signed long long ll;
+
+#define _P(...) (void)printf(__VA_ARGS__)
+#define FOR(x,to) for(x=0;x<(to);x++)
+#define FORR(x,arr) for(auto& x:arr)
+#define FORR2(x,y,arr) for(auto& [x,y]:arr)
+#define ALL(a) (a.begin()),(a.end())
+#define ZERO(a) memset(a,0,sizeof(a))
+#define MINUS(a) memset(a,0xff,sizeof(a))
+template<class T> bool chmax(T &a, const T &b) { if(a<b){a=b;return 1;}return 0;}
+template<class T> bool chmin(T &a, const T &b) { if(a>b){a=b;return 1;}return 0;}
+//-------------------------------------------------------
+
+int T,N;
+vector<int> E[202020];
+int D[202020];
+vector<pair<int,int>> ND[202020];
+int C[202020];
+vector<int> ret[202020];
+
+void dfs(int cur,int pre,int d) {
+	D[cur]=d;
+	ND[d].push_back({(int)E[cur].size()-(cur>0),cur});
+	
+	FORR(e,E[cur]) if(e!=pre) dfs(e,cur,d+1);
+}
+
+void solve() {
+	int i,j,k,l,r,x,y; string s;
+	
+	cin>>T;
+	while(T--) {
+		cin>>N;
+		FOR(i,N+2) {
+			E[i].clear();
+			ND[i].clear();
+		}
+		FOR(i,N-1) {
+			cin>>x>>y;
+			E[x-1].push_back(y-1);
+			E[y-1].push_back(x-1);
+		}
+		dfs(0,0,0);
+		int ma=0;
+		FOR(i,N) {
+			ma=max(ma,(int)ND[i].size());
+			if(i==0) ma=max(ma,1+(int)E[i].size());
+			if(i) ma=max(ma,(int)E[i].size());
+		}
+		set<int> cand;
+		FOR(i,ma) cand.insert(i);
+		for(i=N;i>=0;i--) if(ND[i].size()) {
+			sort(ALL(ND[i]));
+			reverse(ALL(ND[i]));
+			set<int> ok;
+			FORR2(a,cur,ND[i]) {
+				vector<int> del;
+				FORR(e,E[cur]) if(D[e]>D[cur] && cand.count(C[e])) {
+					del.push_back(C[e]);
+					cand.erase(C[e]);
+				}
+				if(cand.size()) {
+					C[cur]=*cand.begin();
+					cand.erase(cand.begin());
+				}
+				else {
+					C[cur]=*ok.begin();
+					ok.erase(ok.begin());
+				}
+				FORR(a,del) ok.insert(a);
+			}
+			FORR2(a,cur,ND[i]) cand.insert(C[cur]);
+			FORR(a,ok) cand.insert(a);
+			assert(cand.size()==ma);
+		}
+		FOR(i,ma) ret[i].clear();
+		FOR(i,N) ret[C[i]].push_back(i+1);
+		
+		cout<<ma<<endl;
+		FOR(i,ma) {
+			cout<<ret[i].size();
+			FORR(a,ret[i]) cout<<" "<<a;
+			cout<<endl;
+		}
+		
+	}
+}
+
+
+int main(int argc,char** argv){
+	string s;int i;
+	if(argc==1) ios::sync_with_stdio(false), cin.tie(0);
+	FOR(i,argc-1) s+=argv[i+1],s+='\n'; FOR(i,s.size()) ungetc(s[s.size()-1-i],stdin);
+	cout.tie(0); solve(); return 0;
+}
