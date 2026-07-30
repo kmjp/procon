@@ -25,7 +25,7 @@ int ask(int x) {
 		cin>>y;
 		assert(y>=0);
 		M[y]++;
-		if(M[y]>=10) return y;
+		if(M[y]>=11) return y;
 	}
 	assert(0);
 	return -1;
