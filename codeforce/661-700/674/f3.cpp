@@ -16,38 +16,34 @@ typedef signed long long ll;
 
 int N,num;
 string S;
-ll A[4];
-ll B[4][4];
-ll C[4][4][4];
+ll dp[4];
 const ll mo=1000000007;
-ll p3[202020];
 
 void solve() {
 	int i,j,k,l,r,x,y,z; string s;
 	cin>>N>>S;
 	
-	p3[0]=1;
-	FOR(i,N+1) p3[i+1]=p3[i]*3%mo;
-	
+	dp[0]=1;
 	FORR(c,S) {
-		if(c=='a') i=0;
-		if(c=='b') i=1;
-		if(c=='c') i=2;
-		if(c=='?') i=3, num++;
-		FOR(x,4) FOR(y,4) (C[x][y][i]+=B[x][y])%=mo;
-		FOR(x,4) (B[x][i]+=A[x])%=mo;
-		A[i]++;
+		if(c=='a') {
+			(dp[1]+=dp[0])%=mo;
+		}
+		else if(c=='b') {
+			(dp[2]+=dp[1])%=mo;
+		}
+		else if(c=='c') {
+			(dp[3]+=dp[2])%=mo;
+		}
+		else {
+			(dp[3]=dp[3]*3+dp[2])%=mo;
+			(dp[2]=dp[2]*3+dp[1])%=mo;
+			(dp[1]=dp[1]*3+dp[0])%=mo;
+			dp[0]=dp[0]*3%mo;
+		}
 	}
 	
-	ll ret=0;
-	FOR(x,4) FOR(y,4) FOR(z,4) if(C[x][y][z]) {
-		if(x==1||x==2) continue;
-		if(y==0||y==2) continue;
-		if(z==0||z==1) continue;
-		i=(x==3)+(y==3)+(z==3);
-		(ret+=C[x][y][z]*p3[num-i])%=mo;
-	}
-	cout<<ret<<endl;
+	cout<<dp[3]<<endl;
+	
 	
 	
 }
