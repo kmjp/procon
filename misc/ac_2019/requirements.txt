@@ -18,7 +18,7 @@ regex==2019.11.1
 requests==2.33.0
 requests-cache==0.5.2
 rope==0.14.0
-soupsieve==1.9.5
+soupsieve==2.8.4
 toml==0.10.0
 typed-ast==1.4.0
 urllib3==2.6.3
