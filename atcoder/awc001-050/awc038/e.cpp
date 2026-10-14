@@ -47,7 +47,7 @@ void solve() {
 		}
 		dp[mask]=sum;
 	}
-	FOR(i,N) FOR(mask,1<<N) if(mask&(1<<i)) dp[mask^(1<<i)]=max(dp[mask^(1<<i)],dp[mask]);
+	FOR(i,N) FOR(mask,1<<N) if(mask&(1<<i)) dp[mask]=max(dp[mask^(1<<i)],dp[mask]);
 	FOR(mask,1<<N) {
 		int ok=0;
 		ll sum=0;
